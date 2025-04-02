@@ -5,24 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Model
+class Item extends Model
 {
     use HasFactory;
 
-    public function item() {
-        return $this->hasMany('App\Models\Item');
+    public function user() {
+        return $this->belongsTo('App\Models\User');
     }
 
     public function buy() {
-        return $this->hasMany('App\Models\Buy');
+        return $this->hasOne('App\Models\Buy');
     }
 
     public function favorite() {
         return $this->hasMany('App\Models\Favorite');
-    }
-
-    public function follow() {
-        return $this->hasMany('App\Models\Follow');
     }
 
     public function comment() {
