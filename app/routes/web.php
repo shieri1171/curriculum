@@ -20,3 +20,4 @@ use App\Http\Controllers\RegistrationController;
 //     return view('welcome');
 // });
 
+Route::get('/', [DisplayController::class, 'index']);
