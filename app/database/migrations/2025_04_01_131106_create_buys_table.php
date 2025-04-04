@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('user_id');
             $table->integer('item_id');
             $table->string('name', '50');
-            $table->integer('tel');
+            $table->string('tel', 15);
             $table->integer('postcode');
             $table->string('address', '100');
             $table->timestamps();

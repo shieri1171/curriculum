@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('image', '200')->nullable();
             $table->text('profile')->nullable();
             $table->string('name', '50')->nullable();
-            $table->integer('tel')->nullable();
+            $table->string('tel', 15)->nullable();
             $table->integer('postcode')->nullable();
             $table->string('address', '100')->nullable();
             $table->tinyInteger('user_flg')->default(1);

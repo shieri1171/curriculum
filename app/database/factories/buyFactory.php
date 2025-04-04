@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
  */
-class buyFactory extends Factory
+class BuyFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +17,12 @@ class buyFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id' => \App\Models\User::inRandomOrder()->first()->id,
+            'item_id' => \App\Models\Item::inRandomOrder()->first()->id,
+            'name' => $this->faker->name,
+            'tel' => $this->faker->phoneNumber,
+            'postcode' => $this->faker->postcode,
+            'address' => $this->faker->address,
         ];
     }
 }

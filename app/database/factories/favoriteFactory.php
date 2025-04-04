@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
  */
-class favoriteFactory extends Factory
+class FavoriteFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +17,8 @@ class favoriteFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id' => \App\Models\User::inRandomOrder()->first()->id,
+            'item_id' => \App\Models\Item::inRandomOrder()->first()->id,
         ];
     }
 }
