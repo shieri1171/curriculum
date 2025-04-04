@@ -25,7 +25,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    家計簿
+                    メルカリ
                 </a>
             </div>
             <div class="my-navbar-cotrol">
