@@ -20,4 +20,9 @@ use App\Http\Controllers\RegistrationController;
 //     return view('welcome');
 // });
 
+Route::get('/login', [DisplayController::class, 'login'])->name('login');
+Route::get('/signup', [DisplayController::class, 'signup'])->name('signup');
+
 Route::get('/', [DisplayController::class, 'index']);
+
+Route::get('/item', [DisplayController::class, 'item'])->name('item');

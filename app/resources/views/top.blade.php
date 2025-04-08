@@ -1,28 +1,21 @@
 @extends('layout')
 
 @section('content')
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col col-md-offset-3 col-md-6">
-        <nav class="card mt-5">
-          <div class="card-header">メルカリへようこそ</div>
-          <div class="card-body">
-            @if($errors->any())
-              <div class="alert alert-danger">
-                @foreach($errors->all() as $message)
-                  <p>{{ $message }}</p>
-                @endforeach
-              </div>
+  <div class="container text-center">
+    <div class="row">
+        <div class="display-1 mt-5 mb-5 w-100">メルカリへようこそ</div>
+
+        <div class="row">
+          @foreach ($items as $item)
+            <div class="col-4 mb-4">
+              <img src="{{ asset('storage/' . $item->image) }}" class="card-img-top " alt="{{ $item->name }}">
+            </div>
+
+            @if ($loop->iteration % 3 == 0 && !$loop->last)
+              </div><div class="row"> 
             @endif
-            @foreach ($items as $item)
-            <tr>
-                <th scope="col">
-                <a href="{{ route('item', ['item' => $item['id']]) }}">{{ $item->image }}</a>
-                </th>
-            </tr>
-            @endforeach
-          </div>
-        </nav>
+          @endforeach
+        </div>
       </div>
     </div>
   </div>
