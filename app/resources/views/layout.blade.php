@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', '家計簿') }}</title>
+    <title>{{ config('app.name', 'メルカリ') }}</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -23,19 +23,23 @@
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
+            <div class="container d-flex justify-content-between align-items-center">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     メルカリ
                 </a>
-            </div>
-            <div class="my-navbar-cotrol">
-                @if(Auth::check())
-                    //
-                    <span class="my-navbar-item">{{ Auth::user()->image }}</span>
-                @else
-                    <a class="my-navbar-item" href="{{ route('login') }}">ログイン</a>
-                    <a class="my-navbar-item" href="{{ route('signup') }}">会員登録</a>
-                @endif
+                <div class="text-center flex-grow-1">
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#searchModal">
+                        検索
+                    </button>
+                </div>
+                <div class="my-navbar-cotrol">
+                    @if(Auth::check())
+                        <span class="my-navbar-item">{{ Auth::user()->image }}</span>
+                    @else
+                        <button type="button" class="my-navbar-item" href="{{ route('login') }}">ログイン</button >
+                        <button type="button" class="my-navbar-item" href="{{ route('signup') }}">会員登録</button >
+                    @endif
+                </div>
             </div>
         </nav>
         @yield('content')
