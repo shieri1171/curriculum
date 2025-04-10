@@ -23,12 +23,12 @@
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container d-flex justify-content-between align-items-center">
+            <div class="container-fluid d-flex justify-content-between align-items-center">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     メルカリ
                 </a>
-                <div class="text-center flex-grow-1">
-                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#searchModal">
+                <div class="col-6 col-sm-6 col-md-6 col-lg-6">
+                    <button type="button" class="btn btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#searchModal">
                         検索
                     </button>
                 </div>
