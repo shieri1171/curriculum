@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\DisplayController;
 use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,8 +22,13 @@ use App\Http\Controllers\RegistrationController;
 //     return view('welcome');
 // });
 
-Route::get('/login', [DisplayController::class, 'login'])->name('login');
-Route::get('/signup', [DisplayController::class, 'signup'])->name('signup');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/login', [UserController::class, 'login'])->name('login');
+
+Route::get('/signup', [UserController::class, 'signup'])->name('signup');
 
 Route::get('/', [DisplayController::class, 'index']);
 

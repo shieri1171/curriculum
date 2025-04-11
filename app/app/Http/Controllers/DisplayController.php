@@ -15,4 +15,5 @@ class DisplayController extends Controller
             'items'=>$items,
         ]);
     }
+
 }

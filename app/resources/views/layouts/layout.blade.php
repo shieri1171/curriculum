@@ -24,7 +24,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container-fluid d-flex justify-content-between align-items-center">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="btn btn-outline-primary" href="{{ url('/') }}">
                     メルカリ
                 </a>
                 <div class="col-6 col-sm-6 col-md-6 col-lg-6">
@@ -36,8 +36,8 @@
                     @if(Auth::check())
                         <span class="my-navbar-item">{{ Auth::user()->image }}</span>
                     @else
-                        <button type="button" class="my-navbar-item" href="{{ route('login') }}">ログイン</button >
-                        <button type="button" class="my-navbar-item" href="{{ route('signup') }}">会員登録</button >
+                        <a type="button" class="my-navbar-item btn btn-outline-primary" href="{{ route('login') }}">ログイン</a >
+                        <a type="button" class="my-navbar-item btn btn-outline-primary" href="{{ route('signup') }}">会員登録</a >
                     @endif
                 </div>
             </div>
