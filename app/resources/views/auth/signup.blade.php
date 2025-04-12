@@ -14,7 +14,7 @@
                 @endforeach
               </div>
             @endif
-            <form action="{{ route('signup') }}" method="POST">
+            <form action="{{ route('signup.conf') }}" method="POST">
               @csrf
               <div class="form-group">
                 <label for="email">メールアドレス</label>
@@ -22,8 +22,8 @@
               </div>
               <br>
               <div class="form-group">
-                <label for="name">ユーザー名</label>
-                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" />
+                <label for="username">ユーザー名</label>
+                <input type="text" class="form-control" id="username" name="username" value="{{ old('username') }}" />
               </div>
               <br>
               <div class="form-group">
