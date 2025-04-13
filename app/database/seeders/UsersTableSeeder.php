@@ -13,7 +13,6 @@ class UsersTableSeeder extends Seeder
      */
     public function run(): void
     {
-        User::truncate();
         \App\Models\user::factory(5)->create();
     }
 }

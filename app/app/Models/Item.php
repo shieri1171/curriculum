@@ -25,6 +25,16 @@ class Item extends Model
         return $this->hasMany('App\Models\comment');
     }
 
+    public function itemImages()
+    {
+        return $this->hasMany(ItemImage::class);
+    }
+
+    public function mainImage()
+    {
+        return $this->hasOne(ItemImage::class)->where('mainflg', 1);
+    }
+
     public const ITEM_STATES = [
         1 => '新品・未使用',
         2 => '未使用に近い',

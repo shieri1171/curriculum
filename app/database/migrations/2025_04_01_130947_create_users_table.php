@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email', '30');
             $table->string('password', '30');
             $table->string('remember_token', '100')->nullable();
-            $table->string('image', '200')->nullable();
+            $table->string('image', 200)->nullable()->default('icons/no_image/no_image_square.jpg');
             $table->text('profile')->nullable();
             $table->string('name', '50')->nullable();
             $table->string('tel', 15)->nullable();

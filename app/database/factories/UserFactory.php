@@ -25,7 +25,7 @@ class UserFactory extends Factory
             'email' => $this->faker->email,
             'password' => $this->faker->password,
             'image' => $this->faker->boolean(70)
-                ? 'items/' . $imageFiles[array_rand($imageFiles)]
+                ? 'icons/' . $imageFiles[array_rand($imageFiles)]
                 : null,
             'profile' => $this->faker->paragraph,
             'name' => $this->faker->name,

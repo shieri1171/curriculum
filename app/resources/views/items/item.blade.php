@@ -17,6 +17,11 @@
             <form action="{{ route('item.conf') }}" method="POST">
               @csrf
               <div class="form-group">
+                <label for="itemname">商品画像</label>
+                <input type="text" class="form-control" id="itemname" name="itemname" value="{{ old('itemname') }}" />
+              </div>
+              <br>
+              <div class="form-group">
                 <label for="itemname">商品名</label>
                 <input type="text" class="form-control" id="itemname" name="itemname" value="{{ old('itemname') }}" />
               </div>
@@ -39,12 +44,12 @@
               </div>
               <br>
               <div class="form-group">
-                <label for="price">金額</label>
-                <input type="text" class="form-control" id="price" name="price" value="{{ old('price') }}" />
+                <label for="presentation">商品説明</label>
+                <input type="text" class="form-control" id="presentation" name="presentation" value="{{ old('price') }}" />
               </div>
               <br>
               <div class="text-center">
-                <button type="submit" class="btn btn-primary">送信</button>
+                <button type="submit" class="btn btn-primary">確認</button>
               </div>
             </form>
           </div>

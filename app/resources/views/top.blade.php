@@ -9,7 +9,7 @@
           @foreach ($items as $item)
             <div class="col-4 mb-4">
               <a href="{{ route('item.info', ['item' => $item->id]) }}">
-                <img src="{{ asset('storage/' . $item->image) }}" class="card-img-top rounded shadow" alt="{{ $item->name }}">
+                <img src="{{ asset('storage/' . $item->mainImage->image_path) }}" class="card-img-top rounded shadow" alt="{{ $item->name }}">
               </a>
             </div>
 

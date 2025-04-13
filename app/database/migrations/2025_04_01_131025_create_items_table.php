@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->string('itemname', '40');
-            $table->string('image', '200')->nullable();
             $table->integer('price');
             $table->text('presentation')->nullable();
             $table->string('state', '100')->nullable();

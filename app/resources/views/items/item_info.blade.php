@@ -5,9 +5,11 @@
 <div class="container mt-5">
   <div class="row">
     <!-- 商品画像 -->
-    <div class="col-12 col-md-6 text-center">
-      <img src="{{ asset('storage/' . $item->image) }}" class="img-fluid rounded shadow" alt="{{ $item->name }}">
-    </div>
+    @foreach ($item->itemImages as $image)
+      <div class="col-12 col-md-6 text-center">
+        <img src="{{ asset('storage/' . $image->image_path) }}" class="img-fluid rounded shadow" alt="{{ $item->name }}">
+      </div>
+    @endforeach
 
     <!-- 商品情報 -->
     <div class="col-md-6">

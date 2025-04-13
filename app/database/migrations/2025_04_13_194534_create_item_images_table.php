@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('image', 200)->nullable()->default('icons/no_image/no_image_square.jpg')->change();
+        Schema::create('item_images', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('item_id')->constrained()->onDelete('cascade');
+            $table->string('image_path');
+            $table->boolean('mainflg')->default(0);
+            $table->timestamps();
         });
     }
 
@@ -21,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('image', 200)->nullable()->default(null)->change();
-        });
+        Schema::dropIfExists('item_images');
     }
 };

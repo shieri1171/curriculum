@@ -8,7 +8,9 @@
         <div class="row">
           @foreach ($items as $item)
             <div class="col-4 mb-4">
-              <img src="{{ asset('storage/' . $item->image) }}" class="card-img-top " alt="{{ $item->name }}">
+              <a href="{{ route('item.info', ['item' => $item->id]) }}">
+                <img src="{{ asset('storage/' . $item->image) }}" class="card-img-top rounded shadow" alt="{{ $item->name }}">
+              </a>
             </div>
 
             @if ($loop->iteration % 3 == 0 && !$loop->last)

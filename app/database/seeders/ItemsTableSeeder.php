@@ -14,7 +14,6 @@ class ItemsTableSeeder extends Seeder
      */
     public function run(): void
     {
-        Item::truncate();
-        \App\Models\item::factory(30)->create();
+        Item::factory(30)->create();
     }
 }
