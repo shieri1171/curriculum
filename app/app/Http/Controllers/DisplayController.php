@@ -16,4 +16,11 @@ class DisplayController extends Controller
         ]);
     }
 
+    public function iteminfo(Item $item) {
+
+        return view ('items.item_info', [
+            'item' => $item
+        ]);
+    }
+
 }

@@ -34,7 +34,10 @@
                 </div>
                 <div class="my-navbar-cotrol">
                     @if(Auth::check())
-                        <span class="my-navbar-item">{{ Auth::user()->image }}</span>
+                        <a type="button" class="my-navbar-item btn btn-outline-primary" href="{{ route('item') }}">+ 出品</a >
+                        <span class="my-navbar-item">
+                            <img src="{{ asset('storage/' . Auth::user()->image) }}" class="rounded-circle" alt="User Image" style="width: 40px; height: 40px;">
+                        </span>
                     @else
                         <a type="button" class="my-navbar-item btn btn-outline-primary" href="{{ route('login') }}">ログイン</a >
                         <a type="button" class="my-navbar-item btn btn-outline-primary" href="{{ route('signup') }}">会員登録</a >

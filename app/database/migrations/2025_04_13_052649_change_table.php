@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('password', 255)->change();
+            $table->string('image', 200)->nullable()->default('icons/no_image/no_image_square.jpg')->change();
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('password', 30)->change(); 
+            $table->string('image', 200)->nullable()->default(null)->change();
         });
     }
 };

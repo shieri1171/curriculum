@@ -16,13 +16,17 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $imageDirectory = storage_path('app/public/icons');
+
+        $imageFiles = array_diff(scandir($imageDirectory), array('..', '.'));
+
         return [
             'username' => $this->faker->userName,
             'email' => $this->faker->email,
             'password' => $this->faker->password,
             'image' => $this->faker->boolean(70)
-                ? $this->faker->image('storage/app/public/icons', 1080, 1080, 'icon', false)
-                : 'no_image.jpg',
+                ? 'items/' . $imageFiles[array_rand($imageFiles)]
+                : null,
             'profile' => $this->faker->paragraph,
             'name' => $this->faker->name,
             'tel' => $this->faker->phoneNumber,

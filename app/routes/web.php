@@ -29,7 +29,7 @@ Auth::routes();
 //トップページ
 Route::get('/', [DisplayController::class, 'index']);
 //商品詳細
-Route::get('/item/{item}/detail', [DisplayController::class, 'itemDetail'])->name('item.detail');
+Route::get('/item/{item}/info', [DisplayController::class, 'iteminfo'])->name('item.info');
 //ログイン
 Route::get('/login', [UserController::class, 'login'])->name('login');
 //ユーザー新規登録
@@ -57,9 +57,10 @@ Route::group(['middleware' => 'auth'], function() {
 
     //item
     //新規登録
-    Route::get('/create_income', [RegistrationController::class, 'createIncomeForm'])->name('create.income');
-    Route::post('/create_income', [RegistrationController::class, 'createIncome']);
-
+    Route::get('/item', [RegistrationController::class, 'item'])->name('item');
+    Route::post('/item-conf', [RegistrationController::class, 'itemconf'])->name('item.conf');
+    Route::post('/item-comp', [RegistrationController::class, 'itemcomp'])->name('item.comp');
+    
     Route::group(['middleware' => 'can:view,item'], function() {
         //削除(管理・ユーザー)
         Route::post('/delete_item/{item}', [RegistrationController::class, 'Deleteitem'])->name('delete.item');
