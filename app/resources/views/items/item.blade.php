@@ -14,11 +14,11 @@
                 @endforeach
               </div>
             @endif
-            <form action="{{ route('item.conf') }}" method="POST">
+            <form action="{{ route('item.conf') }}" method="POST" enctype="multipart/form-data">
               @csrf
               <div class="form-group">
-                <label for="itemname">商品画像</label>
-                <input type="text" class="form-control" id="itemname" name="itemname" value="{{ old('itemname') }}" />
+                <label for="images">商品画像(最大10枚)</label>
+                <input type="file" class="form-control" id="images" name="images[]" multiple accept="image/*" />
               </div>
               <br>
               <div class="form-group">
@@ -45,7 +45,7 @@
               <br>
               <div class="form-group">
                 <label for="presentation">商品説明</label>
-                <input type="text" class="form-control" id="presentation" name="presentation" value="{{ old('price') }}" />
+                <input type="text" class="form-control" id="presentation" name="presentation" value="{{ old('presentation') }}" />
               </div>
               <br>
               <div class="text-center">

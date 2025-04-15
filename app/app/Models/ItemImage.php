@@ -13,4 +13,6 @@ class ItemImage extends Model
     {
         return $this->belongsTo(Item::class);
     }
+
+    protected $fillable = ['item_id', 'image_path', 'mainflg'];
 }

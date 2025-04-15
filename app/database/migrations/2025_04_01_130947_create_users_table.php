@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('username', '40');
             $table->string('email', '30');
-            $table->string('password', '30');
+            $table->string('password');
             $table->string('remember_token', '100')->nullable();
             $table->string('image', 200)->nullable()->default('icons/no_image/no_image_square.jpg');
             $table->text('profile')->nullable();

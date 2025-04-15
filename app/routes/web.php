@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Auth;
 Auth::routes();
 
 //トップページ
-Route::get('/', [DisplayController::class, 'index']);
+Route::get('/', [DisplayController::class, 'index'])->name('top');
 //商品詳細
 Route::get('/item/{item}/info', [DisplayController::class, 'iteminfo'])->name('item.info');
 //ログイン
@@ -59,15 +59,16 @@ Route::group(['middleware' => 'auth'], function() {
     //新規登録
     Route::get('/item', [RegistrationController::class, 'item'])->name('item');
     Route::post('/item-conf', [RegistrationController::class, 'itemconf'])->name('item.conf');
-    // Route::post('/item-comp', [RegistrationController::class, 'itemcomp'])->name('item.comp');
+    Route::post('/item-comp', [RegistrationController::class, 'itemcomp'])->name('item.comp');
     
-    Route::group(['middleware' => 'can:view,Item'], function() {
-        //削除(管理・ユーザー)
-        // Route::post('/delete_item/{item}', [RegistrationController::class, 'Deleteitem'])->name('delete.item');
-        //編集
-        // Route::get('/edit_item/{item}', [RegistrationController::class, 'edititemForm'])->name('edit.item');
-        // Route::post('/edit_item/{item}', [RegistrationController::class, 'edititem']);
-        // Route::post('/sellflg_item/{item}', [RegistrationController::class, 'sellflgitem'])->name('sellflg.item');
-    });
+    //削除(管理・ユーザー)
+    Route::post('/delete_item/{item}', [RegistrationController::class, 'Deleteitem'])->name('delete.item');
+    //編集
+    Route::get('/edit-item/{item}', [RegistrationController::class, 'edititem'])->name('edit.item');
+    Route::post('/edit-item-conf/{item}', [RegistrationController::class, 'edititemconf'])->name('edit.item.conf');
+    Route::post('/edit-item-comp/{item}', [RegistrationController::class, 'edititemcomp'])->name('edit.item.comp');
+
+    //buy
+    Route::post('/sellflg_item/{item}', [RegistrationController::class, 'sellitem'])->name('sell.item');
 
 });

@@ -11,7 +11,7 @@
         </div>
         <div class="card-body text-center">
             <a href="{{ route('item') }}" class="btn btn-primary">続けて出品</a>
-            <a href="{{ route('/') }}" class="btn btn-primary">トップページへ</a>
+            <a href="{{ route('top') }}" class="btn btn-primary">トップページへ</a>
         </div>
       </div>
     </div>

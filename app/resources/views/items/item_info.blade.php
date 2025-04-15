@@ -18,7 +18,7 @@
       <br>
       <p><strong>金額：</strong>¥{{ number_format($item->price) }}</p>
       <br>
-      <p><strong>状態：</strong>{{ $item->state }}</p>
+      <p><strong>状態：</strong>{{ \App\Models\Item::ITEM_STATES[$item->state] }}</p>
     </div>
   </div>
     
@@ -42,6 +42,30 @@
       @endif
     </div>
   </div>
+</div>
+
+<!-- フッター -->
+<div class="row mt-5">
+    <div class="col-12 text-center">
+      @auth
+        <!-- 出品者本人の場合（編集・削除） -->
+        @if(auth()->user()->id === $item->user_id)
+          <a href="{{ route('edit.item', $item->id) }}" class="btn btn-warning">編集</a>
+          <form action="{{ route('delete.item', $item->id) }}" method="POST" style="display:inline;">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger ml-2">削除</button>
+          </form>
+        @endif
+        
+      @else
+        <!-- ログインしていない場合 -->
+        <a href="{{ route('login') }}" class="btn btn-primary">購入</a>
+        <a href="{{ route('login') }}" class="btn btn-outline-danger ml-2">いいね</a>
+      @endauth
+    </div>
+  </div>
+
 </div>
 
 @endsection
