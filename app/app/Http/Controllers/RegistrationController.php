@@ -65,17 +65,16 @@ class RegistrationController extends Controller
     }
 
     //編集
-    public function edititem(Item $item) {
+    public function edititem($id) {
+
+        $item = Item::with('itemImages')->findOrFail($id);
 
         $states = \App\Models\Item::ITEM_STATES;
 
-        return view('Items.item_edit', [
-            'item' => $item,
-            'states' => $states,
-        ]);
+        return view('Items.item_edit', compact('item', 'states'));
     }
 
-    public function edititemconf(Request $request) {
+    public function edititemconf(Request $request, Item $item) {
         $imagePaths = [];
 
         if ($request->hasFile('images')) {
@@ -86,7 +85,7 @@ class RegistrationController extends Controller
         }
 
         $request->session()->put([
-            'item_id' => $request->input('id'),
+            'item_id' => $item->id,
             'images' => $imagePaths,
             'itemname' => $request->input('itemname'),
             'price' => $request->input('price'),
@@ -123,5 +122,31 @@ class RegistrationController extends Controller
         $request->session()->forget(['item_id', 'imagePaths', 'itemname', 'price', 'state', 'presentation']);
 
         return view('Items.item_edit_comp');
+    }
+
+    //画像削除
+    public function deleteImage($id)
+    {
+        $image = \App\Models\ItemImage::findOrFail($id);
+
+        if (Storage::disk('public')->exists($image->image_path)) {
+            Storage::disk('public')->delete($image->image_path);
+        }
+    
+        $itemId = $image->item_id;
+        $image->delete();
+    
+        return redirect()->route('edit.item', ['item' => $itemId])
+                         ->with('success', '画像を削除しました。');
+    }
+
+    //削除
+    public function Deleteitem($id) {
+
+        $item = \App\Models\Item::findOrFail($id);
+        $item->delete();
+
+        \Session::flash('err_msg', '削除しました。');
+        return view('Items.item_delete_comp');
     }
 }

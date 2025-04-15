@@ -10,37 +10,37 @@
       <p>下記の内容をご確認の上修正ボタンを押してください。</p>
       <p>内容を訂正する場合は「戻る」を押してください。</p>
     
-      <form action="{{ route('edit.item.comp', $item->id) }}" method="POST">
+      <form action="{{ route('edit.item.comp', ['item' => session('item_id')]) }}" method="POST">
         @csrf
 
         <dl class="row">
-            <dt class="col-sm-3">商品画像</dt>
-            <dd class="col-sm-9">
-                <div class="row">
-                @foreach (session('images', []) as $path)
-                    <div class="col-md-3 mb-3">
-                        <img src="{{ asset('storage/' . $path) }}" class="img-fluid rounded shadow" alt="商品画像">
-                    </div>
-                @endforeach
-                </div>
-            </dd>
+          <dt class="col-sm-3">商品画像</dt>
+          <dd class="col-sm-9">
+              <div class="row">
+              @foreach (session('items', []) as $path)
+                  <div class="col-md-3 mb-3">
+                      <img src="{{ asset('storage/' . $path) }}" class="img-fluid rounded shadow" alt="商品画像">
+                  </div>
+              @endforeach
+              </div>
+          </dd>
 
-            <dt class="col-sm-3">商品名</dt>
-            <dd class="col-sm-9">{{ session('itemname') }}</dd>
+          <dt class="col-sm-3">商品名</dt>
+          <dd class="col-sm-9">{{ session('itemname') }}</dd>
 
-            <dt class="col-sm-3">金額</dt>
-            <dd class="col-sm-9">￥{{ number_format(session('price')) }}</dd>
-            
-            <dt class="col-sm-3">商品状態</dt>
-            <dd class="col-sm-9">{{ \App\Models\Item::ITEM_STATES[session('state')] }}</dd>
+          <dt class="col-sm-3">金額</dt>
+          <dd class="col-sm-9">￥{{ number_format(session('price')) }}</dd>
+          
+          <dt class="col-sm-3">商品状態</dt>
+          <dd class="col-sm-9">{{ \App\Models\Item::ITEM_STATES[session('state')] }}</dd>
 
-            <dt class="col-sm-3">商品説明</dt>
-            <dd class="col-sm-9">{{ session('presentation') }}</dd>
+          <dt class="col-sm-3">商品説明</dt>
+          <dd class="col-sm-9">{{ session('presentation') }}</dd>
         </dl>
 
         <div class="text-center mt-4">
           <button type="submit" class="btn btn-primary">修正</button>
-          <a href="{{ route('edit.item', $item->id) }}" class="btn btn-secondary">戻る</a>
+          <a href="{{ route('edit.item', ['item' => session('item_id')]) }}" class="btn btn-secondary">戻る</a>
         </div>
       </form>
     </div>

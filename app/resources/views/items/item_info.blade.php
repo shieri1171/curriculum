@@ -51,7 +51,7 @@
         <!-- 出品者本人の場合（編集・削除） -->
         @if(auth()->user()->id === $item->user_id)
           <a href="{{ route('edit.item', $item->id) }}" class="btn btn-warning">編集</a>
-          <form action="{{ route('delete.item', $item->id) }}" method="POST" style="display:inline;">
+          <form action="{{ route('delete.item', $item->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('この画像を削除してもよろしいですか？');">
             @csrf
             @method('DELETE')
             <button type="submit" class="btn btn-danger ml-2">削除</button>

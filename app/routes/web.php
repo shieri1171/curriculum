@@ -62,11 +62,13 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/item-comp', [RegistrationController::class, 'itemcomp'])->name('item.comp');
     
     //削除(管理・ユーザー)
-    Route::post('/delete_item/{item}', [RegistrationController::class, 'Deleteitem'])->name('delete.item');
+    Route::delete('/delete_item/{item}', [RegistrationController::class, 'Deleteitem'])->name('delete.item');
     //編集
     Route::get('/edit-item/{item}', [RegistrationController::class, 'edititem'])->name('edit.item');
-    Route::post('/edit-item-conf/{item}', [RegistrationController::class, 'edititemconf'])->name('edit.item.conf');
+    Route::put('/edit-item-conf/{item}', [RegistrationController::class, 'edititemconf'])->name('edit.item.conf');
     Route::post('/edit-item-comp/{item}', [RegistrationController::class, 'edititemcomp'])->name('edit.item.comp');
+    //画像削除
+    Route::delete('/delete-item-image/{image}', [RegistrationController::class, 'deleteImage'])->name('delete.item.image');
 
     //buy
     Route::post('/sellflg_item/{item}', [RegistrationController::class, 'sellitem'])->name('sell.item');

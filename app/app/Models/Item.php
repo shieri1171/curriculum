@@ -27,7 +27,7 @@ class Item extends Model
 
     public function itemImages()
     {
-        return $this->hasMany(ItemImage::class);
+        return $this->hasMany(ItemImage::class, 'item_id');
     }
 
     public function mainImage()
