@@ -1,0 +1,31 @@
+@extends('layouts.layout')
+
+@section('content')
+  <div class="container text-center">
+    <div class="row">
+      <div class="display-1 mt-5 mb-5 w-100">いいねした商品</div>
+
+      @if($favoriteItems === null)
+        <p>該当する商品は見つかりませんでした。</p>
+      @else
+        <div class="row">
+          @foreach ($favoriteItems as $item)
+            <div class="col-4 mb-4">
+              <a href="{{ route('item.info', ['item' => $item->id]) }}">
+                @if ($item->mainImage)
+                  <img src="{{ asset('storage/' . $item->mainImage->image_path) }}" class="card-img-top rounded shadow" alt="{{ $item->name }}">
+                @else
+                  <img src="{{ asset('path/to/default/image.jpg') }}" class="card-img-top rounded shadow" alt="デフォルト画像">
+                @endif              
+              </a>
+            </div>
+
+            @if ($loop->iteration % 3 == 0 && !$loop->last)
+              </div><div class="row"> 
+            @endif
+          @endforeach
+        </div>
+      @endif
+    </div>
+  </div>
+@endsection

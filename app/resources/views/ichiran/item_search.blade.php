@@ -3,13 +3,20 @@
 @section('content')
   <div class="container text-center">
     <div class="row">
-        <div class="display-1 mt-5 mb-5 w-100">検索結果</div>
+      <div class="display-1 mt-5 mb-5 w-100">検索結果</div>
 
+      @if($items->isEmpty())
+        <p>該当する商品は見つかりませんでした。</p>
+      @else
         <div class="row">
           @foreach ($items as $item)
             <div class="col-4 mb-4">
               <a href="{{ route('item.info', ['item' => $item->id]) }}">
-                <img src="{{ asset('storage/' . $item->image) }}" class="card-img-top rounded shadow" alt="{{ $item->name }}">
+                @if ($item->mainImage)
+                  <img src="{{ asset('storage/' . $item->mainImage->image_path) }}" class="card-img-top rounded shadow" alt="{{ $item->name }}">
+                @else
+                  <img src="{{ asset('path/to/default/image.jpg') }}" class="card-img-top rounded shadow" alt="デフォルト画像">
+                @endif              
               </a>
             </div>
 
@@ -18,7 +25,7 @@
             @endif
           @endforeach
         </div>
-      </div>
+      @endif
     </div>
   </div>
 @endsection

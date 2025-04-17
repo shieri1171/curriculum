@@ -28,6 +28,8 @@ Auth::routes();
 
 //トップページ
 Route::get('/', [DisplayController::class, 'index'])->name('top');
+//商品検索
+Route::get('/item/search', [DisplayController::class, 'search'])->name('item.search');
 //商品詳細
 Route::get('/item/{item}/info', [DisplayController::class, 'iteminfo'])->name('item.info');
 //ログイン
@@ -42,18 +44,19 @@ Route::post('/signup-comp', [UserController::class, 'signupcomp'])->name('signup
 
 Route::group(['middleware' => 'auth'], function() {
 
+    //一覧
+    Route::get('/item/favorites', [DisplayController::class, 'favorites'])->name('item.favorites');
+
     //user
-    Route::group(['middleware' => 'can:view,User'], function() {
-        //ユーザーページ
-        // Route::get('/User/{User}/detail', [DisplayController::class, 'UserDetail'])->name('User.detail');
-        //削除(ユーザー処理)
-        // Route::post('/delete_User/{User}', [RegistrationController::class, 'DeleteUser'])->name('delete.User');
-        //編集
-        // Route::get('/edit_User/{User}', [RegistrationController::class, 'editUserForm'])->name('edit.User');
-        // Route::post('/edit_User/{User}', [RegistrationController::class, 'editUser']);
-        //論理削除(管理者処理)
-        // Route::post('/delflg_User/{User}', [RegistrationController::class, 'DelflgUser'])->name('delflg.User');
-    });
+    //ユーザーページ
+    // Route::get('/User/{User}/detail', [DisplayController::class, 'UserDetail'])->name('User.detail');
+    //削除(ユーザー処理)
+    // Route::post('/delete_User/{User}', [RegistrationController::class, 'DeleteUser'])->name('delete.User');
+    //編集
+    // Route::get('/edit_User/{User}', [RegistrationController::class, 'editUserForm'])->name('edit.User');
+    // Route::post('/edit_User/{User}', [RegistrationController::class, 'editUser']);
+    //論理削除(管理者処理)
+    // Route::post('/delflg_User/{User}', [RegistrationController::class, 'DelflgUser'])->name('delflg.User');
 
     //item
     //新規登録
