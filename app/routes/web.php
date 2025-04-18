@@ -73,7 +73,10 @@ Route::group(['middleware' => 'auth'], function() {
     //画像削除
     Route::delete('/delete-item-image/{image}', [RegistrationController::class, 'deleteImage'])->name('delete.item.image');
 
-    //buy
-    Route::post('/sellflg_item/{item}', [RegistrationController::class, 'sellitem'])->name('sell.item');
+    //購入
+    Route::get('/buy/{item}', [RegistrationController::class, 'buyitem'])->name('buy.item');
+    Route::get('/user-info', [UserController::class, 'userinfo'])->name('user.info');
+    Route::post('/buy-conf', [RegistrationController::class, 'buyconf'])->name('buy.conf');
+    Route::post('/buy-comp', [RegistrationController::class, 'buycomp'])->name('buy.comp');
 
 });

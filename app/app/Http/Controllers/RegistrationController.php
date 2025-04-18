@@ -149,4 +149,5 @@ class RegistrationController extends Controller
         \Session::flash('err_msg', '削除しました。');
         return view('Items.item_delete_comp');
     }
+    
 }

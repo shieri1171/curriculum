@@ -8,6 +8,7 @@ use App\Models\User;
 
 class UserController extends Controller
 {
+    //ログイン
     public function login() {
         
         return view('Auth.login');
@@ -18,6 +19,7 @@ class UserController extends Controller
         return view('Auth.signup');
     }
 
+    //新規登録
     public function signupconf(Request $request) {
 
         $request->session()->put([
@@ -42,4 +44,10 @@ class UserController extends Controller
 
         return view('Auth.signup_comp');
     }
+
+    //購入者情報登録
+    public function userinfo() {
+        
+    }
+
 }
