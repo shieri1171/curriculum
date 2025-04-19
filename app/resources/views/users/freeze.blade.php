@@ -10,7 +10,7 @@
           <h4 class="mb-0">このアカウントは停止されています</h4>
         </div>
         <div class="card-body text-center">
-            <a href="{{ route('/') }}" class="btn btn-primary">トップページへ</a>
+            <a href="{{ route('top') }}" class="btn btn-primary">トップページへ</a>
         </div>
       </div>
     </div>

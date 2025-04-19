@@ -82,11 +82,19 @@
                             </div>
                             <div class="offcanvas-body">
                                 <ul class="list-unstyled">
-                                    <li><a href="/profile" class="nav-link">マイページへ</a></li>
-                                    <li><a href="item/favorites" class="nav-link">いいねした商品</a></li>
-                                    <li><a href="/settings" class="nav-link">購入履歴</a></li>
-                                    <li><a href="/settings" class="nav-link">フォロー一覧</a></li>
-                                    <li><a href="/settings" class="nav-link">売上履歴</a></li>
+                                    <li><a href="{{ route('favorites') }}" class="nav-link">いいねした商品</a></li>
+                                    <li><a href="{{ route('buys') }}" class="nav-link">購入履歴</a></li>
+                                    <li><a href="{{ route('follows') }}" class="nav-link">フォロー一覧</a></li>
+                                    <li><a href="{{ route('sells') }}" class="nav-link">売上履歴</a></li>
+                                    <li>
+                                        @if(request()->is('Userpage/*') && auth()->user()->id == $user->id)
+                                            <!-- マイページの場合 -->
+                                            <a href="{{ route('edit.profile', ['User' => $user]) }}" class="nav-link">プロフィール編集</a>
+                                        @else
+                                            <!-- 他ページの場合 -->
+                                            <a href="{{ route('userpage', ['User' => auth()->user()]) }}" class="nav-link">マイページへ</a>
+                                        @endif
+                                    </li>
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
                                         <button type="submit" class="dropdown-item">ログアウト</button>

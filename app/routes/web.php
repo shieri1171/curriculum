@@ -45,16 +45,19 @@ Route::post('/signup-comp', [UserController::class, 'signupcomp'])->name('signup
 Route::group(['middleware' => 'auth'], function() {
 
     //一覧
-    Route::get('/item/favorites', [DisplayController::class, 'favorites'])->name('item.favorites'); //いいね
+    Route::get('/favorites', [DisplayController::class, 'favorites'])->name('favorites'); //いいね一覧
+    Route::get('/buys', [DisplayController::class, 'buys'])->name('buys'); //購入履歴
+    Route::get('/follows', [DisplayController::class, 'follows'])->name('follows'); //フォロー一覧
+    Route::get('/sells', [DisplayController::class, 'sells'])->name('sells'); //売上履歴
 
     //user
     //ユーザーページ
-    // Route::get('/User/{User}/detail', [DisplayController::class, 'UserDetail'])->name('User.detail');
+    Route::get('/Userpage/{User}', [UserController::class, 'userpage'])->name('userpage');
     //削除(ユーザー処理)
-    // Route::post('/delete_User/{User}', [RegistrationController::class, 'DeleteUser'])->name('delete.User');
+    // Route::post('/delete_User/{User}', [UserController::class, 'DeleteUser'])->name('delete.User');
     //編集
-    // Route::get('/edit_User/{User}', [RegistrationController::class, 'editUserForm'])->name('edit.User');
-    // Route::post('/edit_User/{User}', [RegistrationController::class, 'editUser']);
+    Route::get('/profile-edit/{User}', [UserController::class, 'editprofile'])->name('edit.profile');
+    Route::post('/profile-edit-comp', [UserController::class, 'profileeditcomp'])->name('profile.edit.comp');
     //論理削除(管理者処理)
     // Route::post('/delflg_User/{User}', [RegistrationController::class, 'DelflgUser'])->name('delflg.User');
 
@@ -65,13 +68,13 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/item-comp', [RegistrationController::class, 'itemcomp'])->name('item.comp');
     
     //削除(管理・ユーザー)
-    Route::delete('/delete_item/{item}', [RegistrationController::class, 'Deleteitem'])->name('delete.item');
+    Route::delete('/item-delete/{item}', [RegistrationController::class, 'itemdelete'])->name('item.delete');
     //編集
-    Route::get('/edit-item/{item}', [RegistrationController::class, 'edititem'])->name('edit.item');
-    Route::put('/edit-item-conf/{item}', [RegistrationController::class, 'edititemconf'])->name('edit.item.conf');
-    Route::post('/edit-item-comp/{item}', [RegistrationController::class, 'edititemcomp'])->name('edit.item.comp');
+    Route::get('/item-edit/{item}', [RegistrationController::class, 'itemedit'])->name('item.edit');
+    Route::put('/item-edit-conf/{item}', [RegistrationController::class, 'itemeditconf'])->name('item.edit.conf');
+    Route::post('/item-edit-comp/{item}', [RegistrationController::class, 'itemeditcomp'])->name('item.edit.comp');
     //画像削除
-    Route::delete('/delete-item-image/{image}', [RegistrationController::class, 'deleteImage'])->name('delete.item.image');
+    Route::delete('/item-image-delete/{image}', [RegistrationController::class, 'imagedelete'])->name('item.image.delete');
 
     //購入
     Route::get('/buy/{item}', [RegistrationController::class, 'buyitem'])->name('buy.item'); //条件分岐

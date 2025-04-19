@@ -10,7 +10,7 @@
       <p>下記の内容をご確認の上修正ボタンを押してください。</p>
       <p>内容を訂正する場合は「戻る」を押してください。</p>
     
-      <form action="{{ route('edit.item.comp', ['item' => session('item_id')]) }}" method="POST">
+      <form action="{{ route('item.edit.comp', ['item' => session('item_id')]) }}" method="POST">
         @csrf
 
         <dl class="row">
@@ -40,7 +40,7 @@
 
         <div class="text-center mt-4">
           <button type="submit" class="btn btn-primary">修正</button>
-          <a href="{{ route('edit.item', ['item' => session('item_id')]) }}" class="btn btn-secondary">戻る</a>
+          <a href="{{ route('item.edit', ['item' => session('item_id')]) }}" class="btn btn-secondary">戻る</a>
         </div>
       </form>
     </div>

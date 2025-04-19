@@ -22,7 +22,7 @@
                   @foreach ($item->itemImages as $image)
                     <div class="col-md-3 mb-2">
                       <img src="{{ asset('storage/' . $image->image_path) }}" class="img-thumbnail" alt="登録済み画像">
-                      <form action="{{ route('delete.item.image', ['image' => $image->id]) }}" method="POST" onsubmit="return confirm('この画像を削除してもよろしいですか？');">
+                      <form action="{{ route('item.image.delete', ['image' => $image->id]) }}" method="POST" onsubmit="return confirm('この画像を削除してもよろしいですか？');">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm mt-2">削除</button>
@@ -33,7 +33,7 @@
               </div>
             @endif
 
-            <form action="{{ route('edit.item.conf', $item->id) }}" method="POST">
+            <form action="{{ route('item.edit.conf', $item->id) }}" method="POST">
               @csrf
               @method('PUT')
               <input type="hidden" name="item_id" value="{{ $item->id }}">

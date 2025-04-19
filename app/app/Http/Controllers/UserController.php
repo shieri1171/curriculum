@@ -45,11 +45,25 @@ class UserController extends Controller
         return view('Auth.signup_comp');
     }
 
+    //購入者情報登録
     public function userinfo(Request $request)
     {
-        $user = Item::find(session('user_id'));
-        $back = $request->input('back', null); // hidden で受け取る
+        $user = User::find(session('user_id'));
 
-        return view('users.user_info', compact('user', 'back'));
+        return view('users.user_info', compact('user'));
     }
+
+    //プロフィール修正
+    public function editprofile(User $user) {
+        //image username profile name tel postcode addressの修正
+        // nullの場所は空欄で他は登録されてる値を入力した状態で表示
+        return view('users.profile_edit');
+    }
+
+    public function editprofilecomp() {
+        //usertable更新
+        //登録カラム image username profile name tel postcode address
+        return view('users.profile_edit_comp');
+    }
+    
 }

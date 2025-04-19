@@ -67,7 +67,7 @@ class RegistrationController extends Controller
     }
 
     //編集
-    public function edititem($id) {
+    public function itemedit($id) {
 
         $item = Item::with('itemImages')->findOrFail($id);
 
@@ -76,7 +76,7 @@ class RegistrationController extends Controller
         return view('Items.item_edit', compact('item', 'states'));
     }
 
-    public function edititemconf(Request $request, Item $item) {
+    public function itemeditconf(Request $request, Item $item) {
         $imagePaths = [];
 
         if ($request->hasFile('images')) {
@@ -98,7 +98,7 @@ class RegistrationController extends Controller
         return view('Items.item_edit_conf');
     }
 
-    public function edititemcomp(Request $request, Item $item) {
+    public function itemeditcomp(Request $request, Item $item) {
 
         $item->id = $request->session()->get('item_id');
         $item->itemname = $request->session()->get('itemname');
@@ -127,7 +127,7 @@ class RegistrationController extends Controller
     }
 
     //画像削除
-    public function deleteImage($id)
+    public function imagedelete($id)
     {
         $image = \App\Models\ItemImage::findOrFail($id);
 
@@ -143,7 +143,7 @@ class RegistrationController extends Controller
     }
 
     //削除
-    public function Deleteitem($id) {
+    public function itemdelete($id) {
 
         $item = \App\Models\Item::findOrFail($id);
         $item->delete();
@@ -166,7 +166,7 @@ class RegistrationController extends Controller
 
         if($user->name && $user->tel && $user->postcode && $user->address) {
 
-            return redirect()->route('buy.conf');
+            return view('buys.auto_get_to_post');
 
         }else {
 
@@ -194,6 +194,7 @@ class RegistrationController extends Controller
     }
 
     public function buycomp(Request $request) {
+        $user = auth()->user();
         $buy = new Buy();
 
         $buy->user_id = $request->session()->get('user_id');
@@ -204,6 +205,13 @@ class RegistrationController extends Controller
         $buy->address = $request->session()->get('address');
 
         $buy->save();
+
+        $user->name = $request->session()->get('name');
+        $user->tel = $request->session()->get('tel');
+        $user->postcode = $request->session()->get('postcode');
+        $user->address = $request->session()->get('address');
+
+        $user->save();
 
         //itemtable sell_flg 0⇒1へ
         $item = Item::find($buy->item_id);
