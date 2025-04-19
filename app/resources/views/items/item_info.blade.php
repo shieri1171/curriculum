@@ -48,6 +48,12 @@
 <div class="row mt-5">
     <div class="col-12 text-center">
       @auth
+        <!-- 購入ボタン -->
+        @if(auth()->user()->id !== $item->user_id)
+          <a href="{{ route('buy.item', $item->id) }}" class="btn btn-primary">購入</a>
+          <a href="{{ route('favorite', $item->id) }}" class="btn btn-outline-danger ml-2">いいね</a>
+        @endif
+
         <!-- 出品者本人の場合（編集・削除） -->
         @if(auth()->user()->id === $item->user_id)
           <a href="{{ route('edit.item', $item->id) }}" class="btn btn-warning">編集</a>

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Item;
+use App\Models\Buy;
+use App\Models\User;
 use App\Models\ItemImage;
 
 class RegistrationController extends Controller
@@ -149,5 +151,69 @@ class RegistrationController extends Controller
         \Session::flash('err_msg', '削除しました。');
         return view('Items.item_delete_comp');
     }
-    
+
+    //購入 条件分岐　情報ありの場合は直接確認画面へ
+    public function buyitem(Item $item) {
+
+        $user = auth()->user();
+
+        session([
+            'buyitem' => [
+                'item_id' => $item->id,
+                'user_id' => $user->id,
+            ]
+        ]);
+
+        if($user->name && $user->tel && $user->postcode && $user->address) {
+
+            return redirect()->route('buy.conf');
+
+        }else {
+
+            return view('users.user_info', compact('item'));
+
+        }
+    }
+
+    public function buyconf(Request $request) {
+
+        $user = auth()->user();
+
+        $request->session()->put([
+            'user_id' => $user->id,
+            'item_id' => session('buyitem')['item_id'],
+            'name' => $request->input('name', $user->name),
+            'tel' => $request->input('tel', $user->tel),
+            'postcode' => $request->input('postcode', $user->postcode),
+            'address' => $request->input('address', $user->address),
+        ]);
+        
+        $item = Item::with('itemImages')->find(session('item_id'));
+
+        return view('buys.buy_conf', compact('item'));
+    }
+
+    public function buycomp(Request $request) {
+        $buy = new Buy();
+
+        $buy->user_id = $request->session()->get('user_id');
+        $buy->item_id = $request->session()->get('item_id');
+        $buy->name = $request->session()->get('name');
+        $buy->tel = $request->session()->get('tel');
+        $buy->postcode = $request->session()->get('postcode');
+        $buy->address = $request->session()->get('address');
+
+        $buy->save();
+
+        //itemtable sell_flg 0⇒1へ
+        $item = Item::find($buy->item_id);
+        $item->sell_flg = 1;
+        $item->save();
+
+        $request->session()->forget(['user_id', 'item_id', 'name', 'tel', 'postcode', 'address']);
+
+        return view('buys.buy_comp');
+
+    }
+
 }

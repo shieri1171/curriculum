@@ -45,7 +45,7 @@ Route::post('/signup-comp', [UserController::class, 'signupcomp'])->name('signup
 Route::group(['middleware' => 'auth'], function() {
 
     //一覧
-    Route::get('/item/favorites', [DisplayController::class, 'favorites'])->name('item.favorites');
+    Route::get('/item/favorites', [DisplayController::class, 'favorites'])->name('item.favorites'); //いいね
 
     //user
     //ユーザーページ
@@ -74,9 +74,11 @@ Route::group(['middleware' => 'auth'], function() {
     Route::delete('/delete-item-image/{image}', [RegistrationController::class, 'deleteImage'])->name('delete.item.image');
 
     //購入
-    Route::get('/buy/{item}', [RegistrationController::class, 'buyitem'])->name('buy.item');
-    Route::get('/user-info', [UserController::class, 'userinfo'])->name('user.info');
+    Route::get('/buy/{item}', [RegistrationController::class, 'buyitem'])->name('buy.item'); //条件分岐
+    Route::get('/user-info', [UserController::class, 'userinfo'])->name('user.info'); //確認⇒修正の場合
     Route::post('/buy-conf', [RegistrationController::class, 'buyconf'])->name('buy.conf');
     Route::post('/buy-comp', [RegistrationController::class, 'buycomp'])->name('buy.comp');
 
+    //いいね
+    Route::post('/favorite', [RegistrationController::class, 'favorite'])->name('favorite');
 });

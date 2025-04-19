@@ -45,9 +45,11 @@ class UserController extends Controller
         return view('Auth.signup_comp');
     }
 
-    //購入者情報登録
-    public function userinfo() {
-        
-    }
+    public function userinfo(Request $request)
+    {
+        $user = Item::find(session('user_id'));
+        $back = $request->input('back', null); // hidden で受け取る
 
+        return view('users.user_info', compact('user', 'back'));
+    }
 }
