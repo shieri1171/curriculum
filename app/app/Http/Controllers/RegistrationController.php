@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Item;
 use App\Models\Buy;
 use App\Models\User;
+use App\Models\Favorite;
 use App\Models\ItemImage;
 
 class RegistrationController extends Controller
@@ -223,5 +224,8 @@ class RegistrationController extends Controller
         return view('buys.buy_comp');
 
     }
+
+    //いいね
+
 
 }
