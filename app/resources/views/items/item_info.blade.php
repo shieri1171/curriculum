@@ -56,7 +56,9 @@
             <button class="btn btn-secondary" disabled>売り切れ</button>
           @endif
           
-          <a href="{{ route('favorite', $item->id) }}" class="btn btn-outline-danger ml-2">いいね</a>
+          <button id="favorite-btn" data-item-id="{{ $item->id }}" class="btn p-0 border-0 bg-transparent ms-2">
+            <i id="heart-icon" class="fa{{ $isFavorited ? 's' : 'r' }} fa-heart fa-lg {{ $isFavorited ? 'text-danger' : 'text-secondary' }}"></i>
+          </button>
         @endif
 
         <!-- 出品者本人の場合（編集・削除） -->
@@ -76,7 +78,36 @@
       @endauth
     </div>
   </div>
-
 </div>
+
+<!-- いいね処理(Ajax) -->
+<script>
+document.getElementById('favorite-btn').addEventListener('click', function () {
+    const itemId = this.getAttribute('data-item-id');
+    const icon = this.querySelector('#heart-icon');
+
+    fetch('{{ route('favorite') }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({ item_id: itemId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'liked') {
+            icon.classList.remove('far', 'text-secondary');
+            icon.classList.add('fas', 'text-danger');
+        } else {
+            icon.classList.remove('fas', 'text-danger');
+            icon.classList.add('far', 'text-secondary');
+        }
+    })
+    .catch(error => {
+        console.error('エラー:', error);
+    });
+});
+</script>
 
 @endsection

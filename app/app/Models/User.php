@@ -31,4 +31,10 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\comment');
     }
 
+    //ユーザーがいいねした商品
+    public function favoriteItems()
+    {
+        return $this->belongsToMany(Item::class, 'favorites', 'user_id', 'item_id');
+    }
+
 }

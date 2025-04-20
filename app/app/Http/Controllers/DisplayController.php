@@ -51,10 +51,18 @@ class DisplayController extends Controller
     public function iteminfo(Item $item) {
 
         $item->load('itemImages');
-        
-        return view ('items.item_info', [
-            'item' => $item
-        ]);
+        $user = Auth::user();
+
+        if($user && auth()->user()->id !== $item->user_id) {
+            $isFavorited = Favorite::where('user_id', auth()->id())
+            ->where('item_id', $item->id)
+            ->exists();
+    
+            return view ('items.item_info', compact('item', 'isFavorited'));
+
+        } else {
+            return view ('items.item_info', compact('item'));
+        }
     }
 
     //ユーザーページ(マイページ含む)

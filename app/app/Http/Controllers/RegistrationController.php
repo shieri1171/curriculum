@@ -226,6 +226,29 @@ class RegistrationController extends Controller
     }
 
     //いいね
+    public function favorite(Request $request) {
 
+        $user = auth()->user();
+        $itemId = $request->input('item_id');
+
+        //いいね済か
+        $already = Favorite::where('user_id', $user->id)
+                    ->where('item_id', $itemId)
+                    ->first();
+
+        if ($already) {
+            // いいね解除
+            $already->delete();
+            return response()->json(['status' => 'unliked']);
+        } else {
+            // いいね追加
+            Favorite::create([
+                'user_id' => $user->id,
+                'item_id' => $itemId,
+            ]);
+            return response()->json(['status' => 'liked']);
+        }
+        
+    }
 
 }
