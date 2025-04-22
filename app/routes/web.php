@@ -52,14 +52,14 @@ Route::group(['middleware' => 'auth'], function() {
 
     //user
     //ユーザーページ
-    Route::get('/Userpage/{User}', [UserController::class, 'userpage'])->name('userpage');
+    Route::get('/userpage/{user}', [UserController::class, 'userpage'])->name('userpage');
     //削除(ユーザー処理)
-    // Route::post('/delete_User/{User}', [UserController::class, 'DeleteUser'])->name('delete.User');
+    // Route::post('/delete_user/{user}', [UserController::class, 'DeleteUser'])->name('delete.user');
     //編集
-    Route::get('/profile-edit/{User}', [UserController::class, 'editprofile'])->name('edit.profile');
+    Route::get('/profile-edit/{user}', [UserController::class, 'editprofile'])->name('edit.profile');
     Route::post('/profile-edit-comp', [UserController::class, 'profileeditcomp'])->name('profile.edit.comp');
     //論理削除(管理者処理)
-    // Route::post('/delflg_User/{User}', [RegistrationController::class, 'DelflgUser'])->name('delflg.User');
+    // Route::post('/delflg_user/{user}', [RegistrationController::class, 'DelflgUser'])->name('delflg.user');
 
     //item
     //新規登録

@@ -82,7 +82,7 @@ class DisplayController extends Controller
 
         $favoriteItems = $user->favoriteItems;
 
-        return view('ichiran.favorites', compact('favoriteItems'));
+        return view('ichiran.favorites', compact('favoriteItems', 'user'));
     }
 
     //購入履歴

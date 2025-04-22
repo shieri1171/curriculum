@@ -56,35 +56,35 @@
 
         <!-- 検索モーダル ここから -->
         <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <form action="{{ route('item.search') }}" method="GET" class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="searchModalLabel">商品検索</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                <label for="keyword" class="form-label">キーワード</label>
-                <input type="text" class="form-control" id="keyword" name="keyword" placeholder="商品名や説明">
+            <div class="modal-dialog">
+                <form action="{{ route('item.search') }}" method="GET" class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="searchModalLabel">商品検索</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
                 </div>
-                <div class="mb-3">
-                <label for="price_range" class="form-label">価格帯</label>
-                <select class="form-select" id="price_range" name="price_range">
-                    <option value="">指定なし</option>
-                    <option value="0-999">~999円</option>
-                    <option value="1000-4999">1,000~4,999円</option>
-                    <option value="5000-9999">5,000~9,999円</option>
-                    <option value="10000-99999">10,000~39,999円</option>
-                    <option value="10000-99999">40,000~69,999円</option>
-                    <option value="10000-99999">70,000~99,999円</option>
-                </select>
+                <div class="modal-body">
+                    <div class="mb-3">
+                    <label for="keyword" class="form-label">キーワード</label>
+                    <input type="text" class="form-control" id="keyword" name="keyword" placeholder="商品名や説明">
+                    </div>
+                    <div class="mb-3">
+                    <label for="price_range" class="form-label">価格帯</label>
+                    <select class="form-select" id="price_range" name="price_range">
+                        <option value="">指定なし</option>
+                        <option value="0-999">~999円</option>
+                        <option value="1000-4999">1,000~4,999円</option>
+                        <option value="5000-9999">5,000~9,999円</option>
+                        <option value="10000-99999">10,000~39,999円</option>
+                        <option value="10000-99999">40,000~69,999円</option>
+                        <option value="10000-99999">70,000~99,999円</option>
+                    </select>
+                    </div>
                 </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">検索する</button>
+                </div>
+                </form>
             </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">検索する</button>
-            </div>
-            </form>
-        </div>
         </div>
         <!-- 検索モーダル ここまで-->
 
@@ -101,12 +101,12 @@
                     <li><a href="{{ route('follows') }}" class="nav-link">フォロー一覧</a></li>
                     <li><a href="{{ route('sells') }}" class="nav-link">売上履歴</a></li>
                     <li>
-                        @if(request()->is('Userpage/*') && auth()->user()->id == $user->id)
+                        @if(request()->is('userpage/*') && auth()->user()->id == $user->id)
                             <!-- マイページの場合 -->
-                            <a href="{{ route('edit.profile', ['User' => $user]) }}" class="nav-link">プロフィール編集</a>
+                            <a href="{{ route('edit.profile', ['user' => $user]) }}" class="nav-link">プロフィール編集</a>
                         @else
                             <!-- 他ページの場合 -->
-                            <a href="{{ route('userpage', ['User' => $user]) }}" class="nav-link">マイページへ</a>
+                            <a href="{{ route('userpage', ['user' => $user]) }}" class="nav-link">マイページへ</a>
                         @endif
                     </li>
                     <form method="POST" action="{{ route('logout') }}">
