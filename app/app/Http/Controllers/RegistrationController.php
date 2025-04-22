@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Item;
 use App\Models\Buy;
 use App\Models\User;
 use App\Models\Favorite;
+use App\Models\Comment; 
 use App\Models\ItemImage;
 
 class RegistrationController extends Controller
@@ -231,17 +233,14 @@ class RegistrationController extends Controller
         $user = auth()->user();
         $itemId = $request->input('item_id');
 
-        //いいね済か
         $already = Favorite::where('user_id', $user->id)
                     ->where('item_id', $itemId)
                     ->first();
 
         if ($already) {
-            // いいね解除
             $already->delete();
             return response()->json(['status' => 'unliked']);
         } else {
-            // いいね追加
             Favorite::create([
                 'user_id' => $user->id,
                 'item_id' => $itemId,
@@ -249,6 +248,18 @@ class RegistrationController extends Controller
             return response()->json(['status' => 'liked']);
         }
         
+    }
+
+    //コメント
+    public function comment(Request $request) {
+
+        Comment::create([
+            'user_id' => Auth::id(),
+            'item_id' => $request->item_id,
+            'text' => $request->comment,
+        ]);
+
+        return redirect()->route('item.info', ['item' => $request->item_id]);
     }
 
 }

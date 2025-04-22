@@ -21,8 +21,8 @@ class Item extends Model
         return $this->hasMany('App\Models\Favorite');
     }
 
-    public function comment() {
-        return $this->hasMany('App\Models\comment');
+    public function comments() {
+        return $this->hasMany('App\Models\Comment');
     }
 
     public function itemImages()

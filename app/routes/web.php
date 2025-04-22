@@ -84,4 +84,10 @@ Route::group(['middleware' => 'auth'], function() {
 
     //いいね
     Route::post('/favorite', [RegistrationController::class, 'favorite'])->name('favorite');
+
+    //フォロー
+    Route::post('/follow', [RegistrationController::class, 'follow'])->name('follow');
+
+    //コメント
+    Route::post('/comment', [RegistrationController::class, 'comment'])->name('comment');
 });

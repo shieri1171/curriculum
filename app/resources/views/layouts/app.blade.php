@@ -9,28 +9,32 @@
 
     <title>{{ config('app.name', 'メルカリ') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <!-- Styles -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
 
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Scripts -->
+    <!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
+    <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
 
     @yield('stylesheet')
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="fixed-top navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container-fluid d-flex justify-content-start align-items-center">
                 <a class="btn btn-outline-primary" href="{{ url('/') }}">
                     メルカリ
                 </a>
             </div>
         </nav>
+        <br>
+        <br>
         @yield('content')
     </div>
 </body>

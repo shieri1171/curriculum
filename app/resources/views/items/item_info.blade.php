@@ -28,24 +28,68 @@
 
       <!-- コメント欄 -->
       <h4>コメント</h4>
-      @if(is_null($item->comments))
-        <p class="text-muted">まだコメントはありません。</p>
-      @else
-        <ul class="list-group">
-          @foreach($item->comments->sortBy('created_at') as $comment)
-            <li class="list-group-item">
-              <p class="mb-1">{{ $comment->text }}</p>
-              <small class="text-muted">{{ $comment->created_at->format('Y年m月d日 H:i') }}</small>
-            </li>
-          @endforeach
-        </ul>
-      @endif
+      <div class="border p-3 rounded mb-4">
+        @if(is_null($item->comments))
+          <p class="text-muted">まだコメントはありません。</p>
+        @else
+          <ul class="list-group">
+            @foreach($comments as $comment)
+              @php
+                $isOwner = $comment->user_id === $item->user_id;
+              @endphp
+              <li class="list-group-item {{ $isOwner ? 'text-end bg-light' : '' }}">
+                  <p class="mb-0 fw-bold"><strong>{{ $comment->user->username }}</strong></p>
+                  <p class="mb-0">{{ $comment->text }}</p>
+                  <p class="mb-0 text-muted small">{{ $comment->created_at->format('Y-m-d H:i') }}</p>
+              </li>
+            @endforeach
+          </ul>
+        @endif
+
+        @auth
+          <form action="{{ route('comment') }}" method="POST">
+            @csrf
+            <input type="hidden" name="item_id" value="{{ $item->id }}">
+            <div class="input-group mb-1">
+              <input type="text" name="comment" class="form-control" placeholder="コメントを入力してください" maxlength="100" required>
+              <button type="submit" class="btn btn-primary">送信</button>
+            </div>
+          </form>
+        @else
+          <p>コメントするには <a href="{{ route('login') }}">ログイン</a> が必要です。</p>
+        @endauth
+      </div>
+
+      <!-- 出品者情報 -->
+      <h5>出品者情報</h5>
+      <div class="border p-3 rounded d-flex justify-content-center align-items-center pt-4 mt-4">
+        <div class="d-flex align-items-center">
+          <div>
+            <img src="{{ asset('storage/' . $item->user->image) }}" class="rounded-circle me-4" alt="出品者画像" style="width: 60px; height: 60px;">
+          </div>
+
+          <div class="d-flex flex-column justify-content-between ms-3 flex-grow-1">
+            <div class="fw-bold">{{ $item->user->username }}</div>
+
+            <div class="mt-2 d-flex gap-2">
+              <form action="{{ route('follow', ['id' => $item->user->id]) }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-outline-primary btn-sm">フォロー</button>
+              </form>
+              <a href="{{ route('userpage', ['User' => $item->user->id]) }}" class="btn btn-secondary btn-sm">詳細</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <br>
+      <br>
     </div>
   </div>
 </div>
 
 <!-- フッター -->
-<div class="row mt-5">
+<div class="fixed-bottom bg-white border-top py-2">
     <div class="col-12 text-center">
       @auth
         <!-- 購入ボタン -->

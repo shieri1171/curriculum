@@ -7,6 +7,7 @@ use App\Models\Item;
 use App\Models\Favorite;
 use App\Models\Buy;
 use App\Models\Follow;
+use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 
 class DisplayController extends Controller
@@ -14,19 +15,20 @@ class DisplayController extends Controller
     //top
     public function index() {
 
+        $user = Auth::user();
+
         $items = Item::with('mainImage')
                     ->where('sell_flg', 0)
                     ->inRandomOrder()
                     ->get();
         
-        return view('top',[
-            'items'=>$items,
-        ]);
+        return view('top', compact('items', 'user'));
     }
 
     //検索
     public function search(Request $request)
     {
+        $user = Auth::user();
         $query = Item::query();
 
         if ($request->filled('keyword')) {
@@ -44,13 +46,14 @@ class DisplayController extends Controller
 
         $items = $query->with('mainImage')->get();
 
-        return view('ichiran.item_search', compact('items'));
+        return view('ichiran.item_search', compact('items', 'user'));
     }
 
     //商品詳細
     public function iteminfo(Item $item) {
 
-        $item->load('itemImages');
+        $item->load('itemImages', 'comments');
+        $comments = $item->comments;
         $user = Auth::user();
 
         if($user && auth()->user()->id !== $item->user_id) {
@@ -58,7 +61,7 @@ class DisplayController extends Controller
             ->where('item_id', $item->id)
             ->exists();
     
-            return view ('items.item_info', compact('item', 'isFavorited'));
+            return view ('items.item_info', compact('item', 'isFavorited', 'user', 'comments'));
 
         } else {
             return view ('items.item_info', compact('item'));
