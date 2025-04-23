@@ -64,7 +64,7 @@ class DisplayController extends Controller
             return view ('items.item_info', compact('item', 'isFavorited', 'user', 'comments'));
 
         } else {
-            return view ('items.item_info', compact('item'));
+            return view ('items.item_info', compact('item', 'user', 'comments'));
         }
     }
 
@@ -87,19 +87,36 @@ class DisplayController extends Controller
 
     //購入履歴
     public function buys() {
-        //ログイン中ユーザーが購入したものの履歴
-        //buystableのユーザーidで引っ張ってこれる
+        $user = Auth::user();
+
+        $buys = Buy::where('user_id', $user->id)
+               ->with('item')
+               ->latest()
+               ->get();
+
+    return view('ichiran.buys', compact('buys', 'user'));
     }
 
     //フォロー一覧
     public function follows() {
-        //followtableのfollwer_idがログイン者
-        //情報はfollow_id=user_id の人のを取ってくる
+        $user = Auth::user();
+    
+        $follows = Follow::where('follower_id', $user->id)
+                         ->with('followedUser')
+                         ->get();
+    
+        return view('ichiran.follows', compact('follows', 'user'));
     }
 
     //売上履歴
     public function sells() {
-        //ログイン中のユーザーが出品したものかつsell_flgが1のものを表示
+        $user = Auth::user();
+    
+        $sells = Item::where('user_id', $user->id)
+                     ->where('sell_flg', 1)
+                     ->latest()
+                     ->get();
+    
+        return view('ichiran.sells', compact('sells', 'user'));
     }
-
 }

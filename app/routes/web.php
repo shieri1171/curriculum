@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DisplayController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ManagerController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -24,6 +25,7 @@ use Illuminate\Support\Facades\Auth;
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+//パスワード変更他
 Auth::routes();
 
 //トップページ
@@ -39,9 +41,6 @@ Route::get('/signup', [UserController::class, 'signup'])->name('signup');
 Route::post('/signup-conf', [UserController::class, 'signupconf'])->name('signup.conf');
 Route::post('/signup-comp', [UserController::class, 'signupcomp'])->name('signup.comp');
 
-
-//パスワード変更
-
 Route::group(['middleware' => 'auth'], function() {
 
     //一覧
@@ -50,16 +49,24 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/follows', [DisplayController::class, 'follows'])->name('follows'); //フォロー一覧
     Route::get('/sells', [DisplayController::class, 'sells'])->name('sells'); //売上履歴
 
+    //管理
+    Route::get('/manager', [ManagerController::class, 'manager'])->name('manager');
+    Route::get('/manager-user', [ManagerController::class, 'manageruser'])->name('manager.user');
+    Route::get('/manager-item', [ManagerController::class, 'manageritem'])->name('manager.item');
+
     //user
     //ユーザーページ
     Route::get('/userpage/{user}', [UserController::class, 'userpage'])->name('userpage');
     //削除(ユーザー処理)
-    // Route::post('/delete_user/{user}', [UserController::class, 'DeleteUser'])->name('delete.user');
+    // Route::delete('/delete_user/{user}', [UserController::class, 'DeleteUser'])->name('delete.user');
     //編集
-    Route::get('/profile-edit/{user}', [UserController::class, 'editprofile'])->name('edit.profile');
+    Route::get('/profile-edit/{user}', [UserController::class, 'profileedit'])->name('profile.edit');
     Route::post('/profile-edit-comp', [UserController::class, 'profileeditcomp'])->name('profile.edit.comp');
     //論理削除(管理者処理)
-    // Route::post('/delflg_user/{user}', [RegistrationController::class, 'DelflgUser'])->name('delflg.user');
+    Route::post('/delflg_user', [ManagerController::class, 'delflguser'])->name('delflg.user');
+
+    //一般ユーザー⇔管理ユーザー
+    Route::post('/user_flg', [ManagerController::class, 'userflg'])->name('user.flg');
 
     //item
     //新規登録
@@ -90,4 +97,5 @@ Route::group(['middleware' => 'auth'], function() {
 
     //コメント
     Route::post('/comment', [RegistrationController::class, 'comment'])->name('comment');
+
 });

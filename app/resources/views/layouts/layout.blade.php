@@ -36,19 +36,51 @@
                         検索
                     </button>
                 </div>
-
-                <div class="my-navbar-cotrol">
-                    @if(Auth::check())
+                @if(Auth::check())
+                    <div class="my-navbar-cotrol">
                         <a type="button" class="my-navbar-item btn btn-outline-primary" href="{{ route('item') }}">+ 出品</a >
                         <span class="my-navbar-item" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" style="cursor: pointer;">
                             <img src="{{ asset('storage/' . Auth::user()->image) }}" class="rounded-circle" alt="User Image" style="width: 40px; height: 40px;">
                         </span>
+                    </div>
 
-                    @else
+                    <!-- サイドメニュー ここから -->
+                    <div class="offcanvas offcanvas-end" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+                        <div class="offcanvas-header">
+                            <h5 class="offcanvas-title" id="sidebarMenuLabel">メニュー</h5>
+                            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body">
+                            <ul class="list-unstyled">
+                                <li><a href="{{ route('favorites') }}" class="nav-link">いいねした商品</a></li>
+                                <li><a href="{{ route('buys') }}" class="nav-link">購入履歴</a></li>
+                                <li><a href="{{ route('follows') }}" class="nav-link">フォロー一覧</a></li>
+                                <li><a href="{{ route('sells') }}" class="nav-link">売上履歴</a></li>
+                                <li>
+                                    @if(request()->is('userpage/*') && auth()->user()->id == $user->id)
+                                        <!-- マイページの場合 -->
+                                        <a href="{{ route('edit.profile', ['user' => $user]) }}" class="nav-link">プロフィール編集</a>
+                                    @else
+                                        <!-- 他ページの場合 -->
+                                        <a href="{{ route('userpage', ['user' => $user]) }}" class="nav-link">マイページへ</a>
+                                    @endif
+                                </li>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">ログアウト</button>
+                                </form>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- サイドメニュー ここまで -->
+
+                @else
+                    <div class="my-navbar-cotrol">
                         <a type="button" class="my-navbar-item btn btn-outline-primary" href="{{ route('login') }}">ログイン</a >
                         <a type="button" class="my-navbar-item btn btn-outline-primary" href="{{ route('signup') }}">会員登録</a >
-                    @endif
-                </div>
+                    </div>
+                @endif
+                
             </div>
         </nav>
         <br>
@@ -87,36 +119,6 @@
             </div>
         </div>
         <!-- 検索モーダル ここまで-->
-
-        <!-- サイドメニュー ここから -->
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="sidebarMenuLabel">メニュー</h5>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-                <ul class="list-unstyled">
-                    <li><a href="{{ route('favorites') }}" class="nav-link">いいねした商品</a></li>
-                    <li><a href="{{ route('buys') }}" class="nav-link">購入履歴</a></li>
-                    <li><a href="{{ route('follows') }}" class="nav-link">フォロー一覧</a></li>
-                    <li><a href="{{ route('sells') }}" class="nav-link">売上履歴</a></li>
-                    <li>
-                        @if(request()->is('userpage/*') && auth()->user()->id == $user->id)
-                            <!-- マイページの場合 -->
-                            <a href="{{ route('edit.profile', ['user' => $user]) }}" class="nav-link">プロフィール編集</a>
-                        @else
-                            <!-- 他ページの場合 -->
-                            <a href="{{ route('userpage', ['user' => $user]) }}" class="nav-link">マイページへ</a>
-                        @endif
-                    </li>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="dropdown-item">ログアウト</button>
-                    </form>
-                </ul>
-            </div>
-        </div>
-        <!-- サイドメニュー ここまで -->
 
         @yield('content')
     </div>

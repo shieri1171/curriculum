@@ -10,7 +10,6 @@ class UserController extends Controller
 {
     //ログイン
     public function login() {
-        
         return view('Auth.login');
     }
 

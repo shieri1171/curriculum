@@ -76,7 +76,7 @@
                 @csrf
                 <button type="submit" class="btn btn-outline-primary btn-sm">フォロー</button>
               </form>
-              <a href="{{ route('userpage', ['User' => $item->user->id]) }}" class="btn btn-secondary btn-sm">詳細</a>
+              <a href="{{ route('userpage', ['user' => $item->user->id]) }}" class="btn btn-secondary btn-sm">詳細</a>
             </div>
           </div>
         </div>
@@ -93,7 +93,7 @@
     <div class="col-12 text-center">
       @auth
         <!-- 購入ボタン -->
-        @if(auth()->user()->id !== $item->user_id)
+        @if(auth()->user()->id !== $item->user_id && auth()->user()->user_flg === 1)
           @if ($item->sell_flg == 0)
             <a href="{{ route('buy.item', $item->id) }}" class="btn btn-primary">購入</a>
           @else
@@ -114,7 +114,16 @@
             <button type="submit" class="btn btn-danger ml-2">削除</button>
           </form>
         @endif
-        
+
+        <!-- 管理者の場合（削除のみ） -->
+        @if(auth()->user()->user_flg === 0)
+          <form action="{{ route('item.delete', $item->id) }}" method="POST" style="display:inline;">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger">削除</button>
+          </form>
+        @endif
+
       @else
         <!-- ログインしていない場合 -->
         <a href="{{ route('login') }}" class="btn btn-primary">購入</a>
