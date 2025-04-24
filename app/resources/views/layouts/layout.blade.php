@@ -59,7 +59,7 @@
                                 <li>
                                     @if(request()->is('userpage/*') && auth()->user()->id == $user->id)
                                         <!-- マイページの場合 -->
-                                        <a href="{{ route('edit.profile', ['user' => $user]) }}" class="nav-link">プロフィール編集</a>
+                                        <a href="{{ route('profile.edit', ['user' => $user]) }}" class="nav-link">プロフィール編集</a>
                                     @else
                                         <!-- 他ページの場合 -->
                                         <a href="{{ route('userpage', ['user' => $user]) }}" class="nav-link">マイページへ</a>

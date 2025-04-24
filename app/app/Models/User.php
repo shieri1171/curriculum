@@ -37,4 +37,16 @@ class User extends Authenticatable
         return $this->belongsToMany(Item::class, 'favorites', 'user_id', 'item_id');
     }
 
+    //自分がフォローしている人数
+    public function follows()
+    {
+        return $this->hasMany(Follow::class, 'follower_id');
+    }
+
+    //自分がフォローされている人数
+    public function followers()
+    {
+        return $this->hasMany(Follow::class, 'follow_id');
+    }
+
 }

@@ -68,13 +68,6 @@ class DisplayController extends Controller
         }
     }
 
-    //ユーザーページ(マイページ含む)
-    public function userpage(User $user) {
-        //authにてボタン条件変更
-        //usertableから情報取得
-    }
-
-
     //いいね一覧
     public function favorites(Request $request)
     {

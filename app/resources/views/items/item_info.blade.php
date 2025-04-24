@@ -72,10 +72,22 @@
             <div class="fw-bold">{{ $item->user->username }}</div>
 
             <div class="mt-2 d-flex gap-2">
-              <form action="{{ route('follow', ['id' => $item->user->id]) }}" method="POST">
-                @csrf
-                <button type="submit" class="btn btn-outline-primary btn-sm">フォロー</button>
-              </form>
+              @auth
+                @if (auth()->user()->follows()->where('followed_user_id', $user->id)->exists())
+                  <form action="{{ route('unfollow', $user->id) }}" method="POST">
+                      @csrf
+                      <button type="submit" class="btn btn-outline-secondary">フォロー解除</button>
+                  </form>
+                @else
+                  <form action="{{ route('follow', $user->id) }}" method="POST">
+                      @csrf
+                      <button type="submit" class="btn btn-primary">フォロー</button>
+                  </form>
+                @endif
+              @else
+                <a href="{{ route('login') }}" class="btn btn-outline-primary btn-sm">フォロー</a>
+              @endauth
+
               <a href="{{ route('userpage', ['user' => $item->user->id]) }}" class="btn btn-secondary btn-sm">詳細</a>
             </div>
           </div>

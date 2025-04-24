@@ -44,6 +44,14 @@ class UserController extends Controller
         return view('Auth.signup_comp');
     }
 
+    //ユーザーページ(マイページ含む)
+    public function userpage(User $user) {
+
+        $items = $user->item()->with('mainImage')->latest()->get();
+
+        return view('users.userpage', compact('user', 'items'));
+    }
+
     //購入者情報登録
     public function userinfo(Request $request)
     {

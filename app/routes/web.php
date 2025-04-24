@@ -41,6 +41,10 @@ Route::get('/signup', [UserController::class, 'signup'])->name('signup');
 Route::post('/signup-conf', [UserController::class, 'signupconf'])->name('signup.conf');
 Route::post('/signup-comp', [UserController::class, 'signupcomp'])->name('signup.comp');
 
+//ユーザーページ
+Route::get('/userpage/{user}', [UserController::class, 'userpage'])->name('userpage');
+
+
 Route::group(['middleware' => 'auth'], function() {
 
     //一覧
@@ -55,18 +59,15 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/manager-item', [ManagerController::class, 'manageritem'])->name('manager.item');
 
     //user
-    //ユーザーページ
-    Route::get('/userpage/{user}', [UserController::class, 'userpage'])->name('userpage');
     //削除(ユーザー処理)
-    // Route::delete('/delete_user/{user}', [UserController::class, 'DeleteUser'])->name('delete.user');
+    Route::delete('/user_delete/{user}', [UserController::class, 'userdelete'])->name('user.delete');
     //編集
     Route::get('/profile-edit/{user}', [UserController::class, 'profileedit'])->name('profile.edit');
     Route::post('/profile-edit-comp', [UserController::class, 'profileeditcomp'])->name('profile.edit.comp');
     //論理削除(管理者処理)
     Route::post('/delflg_user', [ManagerController::class, 'delflguser'])->name('delflg.user');
-
     //一般ユーザー⇔管理ユーザー
-    Route::post('/user_flg', [ManagerController::class, 'userflg'])->name('user.flg');
+    Route::patch('/user_flg', [ManagerController::class, 'userflg'])->name('user.flg');
 
     //item
     //新規登録

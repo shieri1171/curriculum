@@ -29,9 +29,9 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user) {
         if ($user->user_flg === 0) {
-            return redirect()->route('manager');
+            return redirect()->route('management.manager');
         } else {
-            return redirect()->intended($this->redirectPath());
+            return redirect()->intended(route('top'));
         }
     }
 
