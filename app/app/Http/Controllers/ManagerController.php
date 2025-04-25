@@ -27,4 +27,13 @@ class ManagerController extends Controller
         return view('management.manager_item', compact('items'));
     }
 
+    //ユーザー停止(論理削除)
+    public function userdelflg(User $user) {
+        $user -> del_flg = 1;
+
+        $user -> save();
+
+        return redirect('users.userpage');
+    }
+
 }

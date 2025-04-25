@@ -72,5 +72,34 @@ class UserController extends Controller
         //登録カラム image username profile name tel postcode address
         return view('users.profile_edit_comp');
     }
-    
+
+    //アカウント削除
+    public function userdelete() {
+        $user = auth()->user();
+        $user->delete();
+
+        \Session::flash('err_msg', '削除しました。');
+        return view('top');
+    }
+
+    //フォロー
+    public function follow(Request $request) {
+        $user = auth()->user();
+
+        $already = Follow::where('follower_id', $user->id)
+                    ->where('follow_id', $userId)
+                    ->first();
+
+        if ($already) {
+            $already->delete();
+            return response()->json(['status' => 'unliked']);
+        } else {
+            Favorite::create([
+                'follower_id' => $user->id,
+                'follow_id' => $userId,
+            ]);
+            return response()->json(['status' => 'liked']);
+        }
+    }
+
 }

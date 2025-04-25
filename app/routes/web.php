@@ -65,7 +65,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/profile-edit/{user}', [UserController::class, 'profileedit'])->name('profile.edit');
     Route::post('/profile-edit-comp', [UserController::class, 'profileeditcomp'])->name('profile.edit.comp');
     //論理削除(管理者処理)
-    Route::post('/delflg_user', [ManagerController::class, 'delflguser'])->name('delflg.user');
+    Route::post('/user_delflg', [ManagerController::class, 'userdelflg'])->name('user.delflg');
     //一般ユーザー⇔管理ユーザー
     Route::patch('/user_flg', [ManagerController::class, 'userflg'])->name('user.flg');
 
