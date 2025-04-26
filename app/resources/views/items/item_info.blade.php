@@ -84,11 +84,11 @@
                       <button type="submit" class="btn btn-primary">フォロー</button>
                   </form>
                 @endif
+                <a href="{{ route('userpage', ['user' => $item->user->id]) }}" class="btn btn-secondary btn-sm">詳細</a>
               @else
                 <a href="{{ route('login') }}" class="btn btn-outline-primary btn-sm">フォロー</a>
+                <a href="{{ route('login') }}" class="btn btn-secondary btn-sm">詳細</a>
               @endauth
-
-              <a href="{{ route('userpage', ['user' => $item->user->id]) }}" class="btn btn-secondary btn-sm">詳細</a>
             </div>
           </div>
         </div>

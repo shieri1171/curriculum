@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mt-5">
+<div class="container mt-5 col col-md-offset-3 col-md-6">
   <div class="card">
     <div class="card-header text-center">
-      <h2><b>新規登録　内容確認</b></h2>
+      <h2><b>新規登録 内容確認</b></h2>
     </div>
     <div class="card-body">
       <p>下記の内容をご確認の上登録ボタンを押してください。</p>
@@ -26,7 +26,7 @@
 
         <div class="text-center mt-4">
           <button type="submit" class="btn btn-primary">登録</button>
-          <a href="{{ route('signup') }}" class="btn btn-secondary">戻る</a>
+          <a href="{{ route('signup', ['email' => request('email'), 'username' => request('username')]) }}" class="btn btn-outline-secondary">戻る</a>
         </div>
       </form>
     </div>

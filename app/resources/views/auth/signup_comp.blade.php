@@ -4,7 +4,7 @@
 
 <div class="container mt-5">
   <div class="row justify-content-center">
-    <div class="col-md-8">
+    <div class="col-md-6">
       <div class="card shadow-sm">
         <div class="card-header text-center">
           <h4 class="mb-0">新規登録が完了しました</h4>

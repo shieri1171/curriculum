@@ -19,7 +19,7 @@ class DisplayController extends Controller
 
         $items = Item::with('mainImage')
                     ->where('sell_flg', 0)
-                    ->inRandomOrder()
+                    ->orderBy('created_at', 'desc')
                     ->get();
         
         return view('top', compact('items', 'user'));
@@ -44,7 +44,9 @@ class DisplayController extends Controller
             $query->whereBetween('price', [(int)$min, (int)$max]);
         }
 
-        $items = $query->with('mainImage')->get();
+        $items = $query->with('mainImage')
+                       ->orderBy('created_at', 'desc')
+                       ->get();
 
         return view('ichiran.item_search', compact('items', 'user'));
     }

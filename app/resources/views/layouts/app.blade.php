@@ -33,8 +33,7 @@
                 </a>
             </div>
         </nav>
-        <br>
-        <br>
+        <div style="height: 80px;"></div>
         @yield('content')
     </div>
 </body>

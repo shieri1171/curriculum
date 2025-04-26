@@ -13,9 +13,12 @@ class UserController extends Controller
         return view('Auth.login');
     }
 
-    public function signup() {
+    public function signup(Request $request) {
 
-        return view('Auth.signup');
+        return view('Auth.signup', [
+            'email' => $request->query('email'),
+            'username' => $request->query('username')
+        ]);
     }
 
     //新規登録
@@ -61,15 +64,28 @@ class UserController extends Controller
     }
 
     //プロフィール修正
-    public function editprofile(User $user) {
-        //image username profile name tel postcode addressの修正
-        // nullの場所は空欄で他は登録されてる値を入力した状態で表示
-        return view('users.profile_edit');
+    public function profileedit(User $user) {
+
+        return view('users.profile_edit', compact('user'));
+
     }
 
-    public function editprofilecomp() {
-        //usertable更新
-        //登録カラム image username profile name tel postcode address
+    public function profileeditcomp(Request $request, User $user) {
+        if ($request->hasFile('image')) {
+        $path = $request->file('image')->store('user_images', 'public');
+        $user->image = $path;
+        }
+
+        $user = auth()->user();
+        $user->username = $request['username'];
+        $user->profile = $request['profile'];
+        $user->name = $request['name'];
+        $user->tel = $request['tel'];
+        $user->postcode = $request['postcode'];
+        $user->address = $request['address'];
+
+        $user->save();
+
         return view('users.profile_edit_comp');
     }
 
@@ -85,20 +101,21 @@ class UserController extends Controller
     //フォロー
     public function follow(Request $request) {
         $user = auth()->user();
+        $followId = $request->input('follow_id');
 
         $already = Follow::where('follower_id', $user->id)
-                    ->where('follow_id', $userId)
+                    ->where('follow_id', $followId)
                     ->first();
 
         if ($already) {
             $already->delete();
-            return response()->json(['status' => 'unliked']);
+            return response()->json(['status' => 'unfollowed']);
         } else {
-            Favorite::create([
+            Follow::create([
                 'follower_id' => $user->id,
-                'follow_id' => $userId,
+                'follow_id' => $followId,
             ]);
-            return response()->json(['status' => 'liked']);
+            return response()->json(['status' => 'followed']);
         }
     }
 

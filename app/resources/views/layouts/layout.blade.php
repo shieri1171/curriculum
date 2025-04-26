@@ -83,8 +83,7 @@
                 
             </div>
         </nav>
-        <br>
-        <br>
+        <div style="height: 80px;"></div>
 
         <!-- 検索モーダル ここから -->
         <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
@@ -97,18 +96,18 @@
                 <div class="modal-body">
                     <div class="mb-3">
                     <label for="keyword" class="form-label">キーワード</label>
-                    <input type="text" class="form-control" id="keyword" name="keyword" placeholder="商品名や説明">
+                    <input type="text" class="form-control" id="keyword" name="keyword" value="{{ request('keyword') }}" placeholder="商品名や説明">
                     </div>
                     <div class="mb-3">
                     <label for="price_range" class="form-label">価格帯</label>
                     <select class="form-select" id="price_range" name="price_range">
-                        <option value="">指定なし</option>
-                        <option value="0-999">~999円</option>
-                        <option value="1000-4999">1,000~4,999円</option>
-                        <option value="5000-9999">5,000~9,999円</option>
-                        <option value="10000-99999">10,000~39,999円</option>
-                        <option value="10000-99999">40,000~69,999円</option>
-                        <option value="10000-99999">70,000~99,999円</option>
+                        <option value="" {{ request('price_range') == '' ? 'selected' : '' }}>指定なし</option>
+                        <option value="300-999" {{ request('price_range') == '300-999' ? 'selected' : '' }}>~999円</option>
+                        <option value="1000-4999" {{ request('price_range') == '1000-4999' ? 'selected' : '' }}>1,000~4,999円</option>
+                        <option value="5000-9999" {{ request('price_range') == '5000-9999' ? 'selected' : '' }}>5,000~9,999円</option>
+                        <option value="10000-39999" {{ request('price_range') == '10000-39999' ? 'selected' : '' }}>10,000~39,999円</option>
+                        <option value="40000-69999" {{ request('price_range') == '40000-69999' ? 'selected' : '' }}>40,000~69,999円</option>
+                        <option value="70000-99999" {{ request('price_range') == '70000-99999' ? 'selected' : '' }}>70,000~99,999円</option>
                     </select>
                     </div>
                 </div>

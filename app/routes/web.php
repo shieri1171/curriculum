@@ -44,6 +44,10 @@ Route::post('/signup-comp', [UserController::class, 'signupcomp'])->name('signup
 //ユーザーページ
 Route::get('/userpage/{user}', [UserController::class, 'userpage'])->name('userpage');
 
+//停止ユーザー
+Route::get('/freeze', function () {
+    return view('user.freeze');
+})->name('freeze');
 
 Route::group(['middleware' => 'auth'], function() {
 
@@ -69,6 +73,9 @@ Route::group(['middleware' => 'auth'], function() {
     //一般ユーザー⇔管理ユーザー
     Route::patch('/user_flg', [ManagerController::class, 'userflg'])->name('user.flg');
 
+    //フォロー
+    Route::post('/follow', [RegistrationController::class, 'follow'])->name('follow');
+
     //item
     //新規登録
     Route::get('/item', [RegistrationController::class, 'item'])->name('item');
@@ -92,9 +99,6 @@ Route::group(['middleware' => 'auth'], function() {
 
     //いいね
     Route::post('/favorite', [RegistrationController::class, 'favorite'])->name('favorite');
-
-    //フォロー
-    Route::post('/follow', [RegistrationController::class, 'follow'])->name('follow');
 
     //コメント
     Route::post('/comment', [RegistrationController::class, 'comment'])->name('comment');
