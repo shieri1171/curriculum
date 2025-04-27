@@ -29,7 +29,7 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user) {
         if ($user->user_flg === 0) {
-            return redirect()->route('management.manager');
+            return redirect()->route('manager');
         } elseif($user->del_flg === 1) {
             auth()->logout();
             return redirect()->route('freeze');

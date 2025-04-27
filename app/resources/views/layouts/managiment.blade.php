@@ -28,8 +28,8 @@
     <div id="app">
         <nav class="fixed-top navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container-fluid">
-                <a class="navbar-brand btn btn-outline-primary me-3" href="{{ route('manager') }}">
-                    メルカリ
+                <a href="{{ url('/') }}">
+                    <img src="{{ asset('storage/unnamed.png') }}" alt="メルカリ" style="width: 40px; height: 40px;">
                 </a>
                 <span class="navbar-text">
                     管理ユーザー専用

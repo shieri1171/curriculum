@@ -28,8 +28,8 @@
     <div id="app">
         <nav class="fixed-top navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container-fluid d-flex justify-content-start align-items-center">
-                <a class="btn btn-outline-primary" href="{{ url('/') }}">
-                    メルカリ
+                <a href="{{ url('/') }}">
+                    <img src="{{ asset('storage/unnamed.png') }}" alt="メルカリ" style="width: 40px; height: 40px;">
                 </a>
             </div>
         </nav>

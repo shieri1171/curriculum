@@ -33,7 +33,7 @@
               </div>
             @endif
 
-            <form action="{{ route('item.edit.conf', $item->id) }}" method="POST">
+            <form action="{{ route('item.edit.conf', $item->id) }}" method="POST" enctype="multipart/form-data">
               @csrf
               @method('PUT')
               <input type="hidden" name="item_id" value="{{ $item->id }}">

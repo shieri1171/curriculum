@@ -28,13 +28,16 @@
     <div id="app">
         <nav class="fixed-top navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container-fluid d-flex justify-content-between align-items-center">
-                <a class="btn btn-outline-primary" href="{{ url('/') }}">
-                    メルカリ
+                <a href="{{ url('/') }}">
+                    <img src="{{ asset('storage/unnamed.png') }}" alt="メルカリ" style="width: 40px; height: 40px;">
                 </a>
-                <div class="col-6 col-sm-6 col-md-6 col-lg-6">
-                    <button type="button" class="btn btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#searchModal">
-                        検索
-                    </button>
+                <div class="col-6 col-sm-6 col-md-6 col-lg-4 mx-auto">
+                    <div class="input-group" role="button" data-bs-toggle="modal" data-bs-target="#searchModal">
+                        <input type="text" class="form-control" placeholder="検索" readonly style="background-color: #fff; cursor: pointer;">
+                        <span class="input-group-text" >
+                        🔍
+                        </span>
+                    </div>
                 </div>
                 @if(Auth::check())
                     <div class="my-navbar-cotrol">
@@ -43,36 +46,6 @@
                             <img src="{{ asset('storage/' . Auth::user()->image) }}" class="rounded-circle" alt="User Image" style="width: 40px; height: 40px;">
                         </span>
                     </div>
-
-                    <!-- サイドメニュー ここから -->
-                    <div class="offcanvas offcanvas-end" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
-                        <div class="offcanvas-header">
-                            <h5 class="offcanvas-title" id="sidebarMenuLabel">メニュー</h5>
-                            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                        </div>
-                        <div class="offcanvas-body">
-                            <ul class="list-unstyled">
-                                <li><a href="{{ route('favorites') }}" class="nav-link">いいねした商品</a></li>
-                                <li><a href="{{ route('buys') }}" class="nav-link">購入履歴</a></li>
-                                <li><a href="{{ route('follows') }}" class="nav-link">フォロー一覧</a></li>
-                                <li><a href="{{ route('sells') }}" class="nav-link">売上履歴</a></li>
-                                <li>
-                                    @if(request()->is('userpage/*') && auth()->user()->id == $user->id)
-                                        <!-- マイページの場合 -->
-                                        <a href="{{ route('profile.edit', ['user' => $user]) }}" class="nav-link">プロフィール編集</a>
-                                    @else
-                                        <!-- 他ページの場合 -->
-                                        <a href="{{ route('userpage', ['user' => $user]) }}" class="nav-link">マイページへ</a>
-                                    @endif
-                                </li>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button type="submit" class="dropdown-item">ログアウト</button>
-                                </form>
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- サイドメニュー ここまで -->
 
                 @else
                     <div class="my-navbar-cotrol">
@@ -118,6 +91,39 @@
             </div>
         </div>
         <!-- 検索モーダル ここまで-->
+
+        @auth
+            <!-- サイドメニュー ここから -->
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+                <div class="offcanvas-header bg-info text-white">
+                    <h5 class="offcanvas-title" id="sidebarMenuLabel">メニュー</h5>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="list-unstyled">
+                        <li><a href="{{ route('favorites') }}" class="nav-link fs-5 border-bottom pb-2 mb-2">いいねした商品</a></li>
+                        <li><a href="{{ route('buys') }}" class="nav-link fs-5 border-bottom pb-2 mb-2">購入履歴</a></li>
+                        <li><a href="{{ route('follows') }}" class="nav-link fs-5 border-bottom pb-2 mb-2">フォロー一覧</a></li>
+                        <li><a href="{{ route('sells') }}" class="nav-link fs-5 border-bottom pb-2 mb-2">売上履歴</a></li>
+                        <li>
+                            @if(request()->is('userpage/*') && auth()->user()->id == $user->id)
+                                <!-- マイページの場合 -->
+                                <a href="{{ route('profile.edit', ['user' => $user]) }}" class="nav-link fs-5 border-bottom pb-2 mb-2">プロフィール編集</a>
+                            @else
+                                <!-- 他ページの場合 -->
+                                <a href="{{ route('userpage', ['user' => $user]) }}" class="nav-link fs-5 border-bottom pb-2 mb-2">マイページへ</a>
+                            @endif
+                        </li>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="dropdown-item fs-5 border-bottom pb-2 mb-2">ログアウト</button>
+                        </form>
+                    </ul>
+                </div>
+            </div>
+            <!-- サイドメニュー ここまで -->
+        @endauth
+
 
         @yield('content')
     </div>
