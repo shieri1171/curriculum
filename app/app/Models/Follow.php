@@ -11,6 +11,8 @@ class Follow extends Model
 
     public $timestamps = false;
 
+    protected $fillable = ['follower_id', 'follow_id',];
+
     public function user() {
         return $this->belongsTo('App\Models\User');
     }

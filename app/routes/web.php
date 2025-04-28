@@ -74,7 +74,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::patch('/user_flg', [ManagerController::class, 'userflg'])->name('user.flg');
 
     //フォロー
-    Route::post('/follow', [RegistrationController::class, 'follow'])->name('follow');
+    Route::post('/follow', [UserController::class, 'follow'])->name('follow');
 
     //item
     //新規登録

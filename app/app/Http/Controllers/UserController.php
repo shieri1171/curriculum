@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Item;
+use App\Models\Follow;
 
 class UserController extends Controller
 {
@@ -100,22 +102,29 @@ class UserController extends Controller
 
     //フォロー
     public function follow(Request $request) {
+
         $user = auth()->user();
         $followId = $request->input('follow_id');
-
-        $already = Follow::where('follower_id', $user->id)
+        
+        $isFollowing  = Follow::where('follower_id', $user->id)
                     ->where('follow_id', $followId)
                     ->first();
 
-        if ($already) {
-            $already->delete();
-            return response()->json(['status' => 'unfollowed']);
+        if ($isFollowing ) {
+            $isFollowing ->delete();
+            // return response()->json(['status' => 'unfollowed']);
+
+            $item = Item::with('itemImages')->find($request->input('item_id'));
+            return view('items.item_info', compact('item'));
         } else {
             Follow::create([
                 'follower_id' => $user->id,
                 'follow_id' => $followId,
             ]);
-            return response()->json(['status' => 'followed']);
+            // return response()->json(['status' => 'followed']);
+
+            $item = Item::with('itemImages')->find($request->input('item_id'));
+            return view('items.item_info', compact('item'));
         }
     }
 

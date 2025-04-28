@@ -4,7 +4,7 @@
 
 <div class="container mt-5">
   <div class="row justify-content-center">
-    <div class="col-md-8">
+  <div class="col-12 col-md-6 mx-auto">
       <div class="card shadow-sm">
         <div class="card-header text-center">
           <h4 class="mb-0">購入が完了しました</h4>

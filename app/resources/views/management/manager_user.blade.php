@@ -9,7 +9,7 @@
                     <div class="border p-3 rounded d-flex justify-content-center align-items-center pt-4 mt-4">
                         <div class="d-flex align-items-center">
                             <div>
-                                <img src="{{ asset('storage/' . $user->image) }}" class="rounded-circle me-4" alt="ユーザー画像" style="width: 60px; height: 60px;">
+                                <img src="{{ asset('storage/' . $user->image) }}" class="rounded-circle me-4" alt="ユーザー画像" style="width: 100px; height: 100px;">
                             </div>
 
                             <div class="d-flex flex-column justify-content-between ms-3 flex-grow-1">

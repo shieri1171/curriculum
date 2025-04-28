@@ -85,7 +85,7 @@ class DisplayController extends Controller
         $user = Auth::user();
 
         $buys = Buy::where('user_id', $user->id)
-               ->with('item')
+               ->with('item.mainImage')
                ->latest()
                ->get();
 

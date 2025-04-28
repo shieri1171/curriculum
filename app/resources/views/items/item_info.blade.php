@@ -94,18 +94,16 @@
               @auth
                 @if (auth()->user()->id == $item->user->id || auth()->user()->is_admin)
                     <a href="{{ route('userpage', ['user' => $item->user->id]) }}" class="btn btn-secondary btn-sm">詳細</a>
-                @elseif (auth()->user()->follows()->where('followed_user_id', $item->user->id)->exists()) 
-                    <form action="{{ route('unfollow', $item->user->id) }}" method="POST">
-                        @csrf
-                        <button type="submit" class="btn btn-outline-secondary">フォロー解除</button>
-                    </form>
-                    <a href="{{ route('userpage', ['user' => $item->user->id]) }}" class="btn btn-secondary btn-sm">詳細</a>
-                @else
-                    <form action="{{ route('follow', $item->user->id) }}" method="POST">
-                        @csrf
-                        <button type="submit" class="btn btn-primary">フォロー</button>
-                    </form>
-                    <a href="{{ route('userpage', ['user' => $item->user->id]) }}" class="btn btn-secondary btn-sm">詳細</a>
+                @elseif (auth()->user()->follows()->where('follower_id', $item->user->id)->exists()) 
+                  <form action="{{ route('follow') }}" method="POST" id="follow-form">
+                    @csrf
+                    <input type="hidden" name="follow_id" value="{{ $item->user->id }}">
+                    <input type="hidden" name="item_id" value="{{ $item->id }}"> <!-- 非同期にて今だけ -->
+                    <button type="submit" id="follow-btn" class="btn {{ $isFollowing ? 'btn-outline-secondary' : 'btn-primary' }}">
+                      {{ $isFollowing ? 'フォロー解除' : 'フォロー' }}
+                    </button>
+                  </form>
+                  <a href="{{ route('userpage', ['user' => $item->user->id]) }}" class="btn btn-secondary btn-sm">詳細</a>
                 @endif              
               @else
                 <a href="{{ route('login') }}" class="btn btn-outline-primary btn-sm">フォロー</a>
