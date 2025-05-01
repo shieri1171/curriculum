@@ -29,7 +29,7 @@
         <nav class="fixed-top navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container-fluid">
                 <a href="{{ url('/') }}">
-                    <img src="{{ asset('storage/unnamed.png') }}" alt="メルカリ" style="width: 40px; height: 40px;">
+                    <img src="{{ asset('storage/unnamed.png') }}" alt="メルカリ" style="width: 60px; height: 60px;">
                 </a>
                 <span class="navbar-text">
                     管理ユーザー専用

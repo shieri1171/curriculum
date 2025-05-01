@@ -21,7 +21,7 @@
                     <div class="row">
                     @foreach (session('images', []) as $path)
                         <div class="col-md-3 mb-3">
-                            <img src="{{ asset('storage/' . $path) }}" class="img-fluid rounded shadow" alt="商品画像">
+                            <img src="{{ asset('storage/' . $path) }}" class="img-fluid rounded shadow" style="width:100px; height:100px; object-fit: cover;" alt="商品画像">
                         </div>
                     @endforeach
                     </div>

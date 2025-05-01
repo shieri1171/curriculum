@@ -18,6 +18,7 @@ class DisplayController extends Controller
         $user = Auth::user();
 
         $items = Item::with('mainImage')
+                    ->where('del_flg', 0)
                     ->where('sell_flg', 0)
                     ->orderBy('created_at', 'desc')
                     ->get();
@@ -45,6 +46,7 @@ class DisplayController extends Controller
         }
 
         $items = $query->with('mainImage')
+                       ->where('sell_flg', 0)
                        ->orderBy('created_at', 'desc')
                        ->get();
 
@@ -57,13 +59,19 @@ class DisplayController extends Controller
         $item->load('itemImages', 'comments');
         $comments = $item->comments;
         $user = Auth::user();
+        $followId = $item->user->input;
+
 
         if($user && auth()->user()->id !== $item->user_id) {
             $isFavorited = Favorite::where('user_id', auth()->id())
             ->where('item_id', $item->id)
             ->exists();
+
+            $isFollowing  = Follow::where('follower_id', $user->id)
+            ->where('follow_id', $followId)
+            ->first();
     
-            return view ('items.item_info', compact('item', 'isFavorited', 'user', 'comments'));
+            return view ('items.item_info', compact('item', 'isFavorited', 'user', 'comments', 'isFollowing'));
 
         } else {
             return view ('items.item_info', compact('item', 'user', 'comments'));

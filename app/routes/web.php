@@ -46,7 +46,7 @@ Route::get('/userpage/{user}', [UserController::class, 'userpage'])->name('userp
 
 //停止ユーザー
 Route::get('/freeze', function () {
-    return view('user.freeze');
+    return view('users.freeze');
 })->name('freeze');
 
 Route::group(['middleware' => 'auth'], function() {
@@ -69,12 +69,14 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/profile-edit/{user}', [UserController::class, 'profileedit'])->name('profile.edit');
     Route::post('/profile-edit-comp', [UserController::class, 'profileeditcomp'])->name('profile.edit.comp');
     //論理削除(管理者処理)
-    Route::post('/user_delflg', [ManagerController::class, 'userdelflg'])->name('user.delflg');
+    Route::delete('/user_delflg/{user}', [ManagerController::class, 'userdelflg'])->name('user.delflg');
+    // 復元
+    Route::post('/user_restore/{user}', [ManagerController::class, 'userrestore'])->name('user.restore');
     //一般ユーザー⇔管理ユーザー
-    Route::patch('/user_flg', [ManagerController::class, 'userflg'])->name('user.flg');
+    Route::patch('/user_flg/{user}', [ManagerController::class, 'userflg'])->name('user.flg');
 
     //フォロー
-    Route::post('/follow', [UserController::class, 'follow'])->name('follow');
+    Route::post('/follow/{user}', [UserController::class, 'follow'])->name('follow');
 
     //item
     //新規登録
@@ -82,8 +84,12 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/item-conf', [RegistrationController::class, 'itemconf'])->name('item.conf');
     Route::post('/item-comp', [RegistrationController::class, 'itemcomp'])->name('item.comp');
     
-    //削除(管理・ユーザー)
+    //削除(ユーザー処理)
     Route::delete('/item-delete/{item}', [RegistrationController::class, 'itemdelete'])->name('item.delete');
+    //論理削除(管理者処理)
+    Route::delete('/item_delflg/{item}', [ManagerController::class, 'itemdelflg'])->name('item.delflg');
+    //復元
+    Route::post('/item_restore/{item}', [ManagerController::class, 'itemrestore'])->name('item.restore');
     //編集
     Route::get('/item-edit/{item}', [RegistrationController::class, 'itemedit'])->name('item.edit');
     Route::put('/item-edit-conf/{item}', [RegistrationController::class, 'itemeditconf'])->name('item.edit.conf');

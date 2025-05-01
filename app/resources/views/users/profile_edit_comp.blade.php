@@ -10,7 +10,7 @@
           <h4 class="mb-0">プロフィールの修正が完了しました</h4>
         </div>
         <div class="card-body text-center">
-            <a href="{{ route('userpage') }}" class="btn btn-primary">マイページへ</a>
+            <a href="{{ route('userpage', ['user' => $user]) }}" class="btn btn-primary">マイページへ</a>
         </div>
       </div>
     </div>

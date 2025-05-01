@@ -23,21 +23,20 @@ class RegistrationController extends Controller
     }
 
     public function itemconf(Request $request) {
-        $imagePaths = [];
-
         if ($request->hasFile('images')) {
+            $imagePaths = [];
             foreach ($request->file('images') as $image) {
                 $path = $image->store('items', 'public');
                 $imagePaths[] = $path;
             }
+            session(['images' => $imagePaths]);
         }
 
-        $request->session()->put([
-            'images' => $imagePaths,
-            'itemname' => $request->input('itemname'),
-            'price' => $request->input('price'),
-            'state' => $request->input('state'),
-            'presentation' => $request->input('presentation'),
+        session([
+            'itemname' => $request->itemname,
+            'price' => $request->price,
+            'state' => $request->state,
+            'presentation' => $request->presentation,
         ]);
 
         return view('Items.item_conf');
@@ -64,46 +63,50 @@ class RegistrationController extends Controller
             ]);
         }
 
-        $request->session()->forget(['imagePaths', 'itemname', 'price', 'state', 'presentation']);
+        $request->session()->forget(['images', 'itemname', 'price', 'state', 'presentation']);
 
-        return view('Items.item_comp');
+        return view('Items.item_comp', compact('item'));
     }
 
     //編集
     public function itemedit($id) {
 
         $item = Item::with('itemImages')->findOrFail($id);
-
         $states = \App\Models\Item::ITEM_STATES;
+
+        session([
+            'existing_images' => $item->itemImages->pluck('image_path')->toArray(),
+            'existing_image_ids' => $item->itemImages->pluck('id')->toArray()
+        ]);
 
         return view('Items.item_edit', compact('item', 'states'));
     }
 
     public function itemeditconf(Request $request, Item $item) {
-        $imagePaths = [];
 
         if ($request->hasFile('images')) {
+            $imagePaths = [];
             foreach ($request->file('images') as $image) {
                 $path = $image->store('items', 'public');
                 $imagePaths[] = $path;
             }
+            session(['images' => $imagePaths]);
         }
 
-        $request->session()->put([
+        session([
             'item_id' => $item->id,
-            'images' => $imagePaths,
-            'itemname' => $request->input('itemname'),
-            'price' => $request->input('price'),
-            'state' => $request->input('state'),
-            'presentation' => $request->input('presentation'),
+            'itemname' => $request->itemname,
+            'price' => $request->price,
+            'state' => $request->state,
+            'presentation' => $request->presentation,
+            'existing_images' => session('existing_images'),
         ]);
 
-        return view('Items.item_edit_conf');
+        return view('Items.item_edit_conf', compact('item'));
     }
 
     public function itemeditcomp(Request $request, Item $item) {
 
-        $item->id = $request->session()->get('item_id');
         $item->itemname = $request->session()->get('itemname');
         $item->price = $request->session()->get('price');
         $item->state = $request->session()->get('state');
@@ -111,22 +114,28 @@ class RegistrationController extends Controller
 
         $item->save();
 
+        $keepImages = session('existing_images', []);
+
         foreach ($item->itemImages as $oldImage) {
-            Storage::disk('public')->delete($oldImage->image_path);
-            $oldImage->delete();
+            if (!in_array($oldImage->image_path, $keepImages)) {
+                Storage::disk('public')->delete($oldImage->image_path);
+                $oldImage->delete();
+            }
         }
 
-        foreach ($newImagePaths as $index => $path) {
-            ItemImage::create([
-                'item_id' => $item->id,
-                'image_path' => $path,
-                'mainflg' => $index === 0 ? 1 : 0,
-            ]);
+        if ($newImagePaths = session('images', [])) {
+            foreach ($newImagePaths as $index => $path) {
+                ItemImage::create([
+                    'item_id' => $item->id,
+                    'image_path' => $path,
+                    'mainflg' => $index === 0 ? 1 : 0,
+                ]);
+            }
         }
 
-        $request->session()->forget(['item_id', 'imagePaths', 'itemname', 'price', 'state', 'presentation']);
+        $request->session()->forget(['item_id', 'images', 'existing_images', 'itemname', 'price', 'state', 'presentation']);
 
-        return view('Items.item_edit_comp');
+        return view('Items.item_edit_comp', compact('item'));
     }
 
     //画像削除
@@ -141,7 +150,7 @@ class RegistrationController extends Controller
         $itemId = $image->item_id;
         $image->delete();
     
-        return redirect()->route('edit.item', ['item' => $itemId])
+        return redirect()->route('item.edit', ['item' => $itemId])
                          ->with('success', '画像を削除しました。');
     }
 

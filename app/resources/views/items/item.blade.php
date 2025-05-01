@@ -18,25 +18,36 @@
               @csrf
               <div class="form-group">
                 <label for="images">商品画像(最大10枚)</label>
+
+                <div id="session-preview" class="mt-3 d-flex flex-wrap">
+                  @foreach (session('images', []) as $path)
+                    <div class="m-1">
+                      <img src="{{ asset('storage/' . $path) }}" class="img-thumbnail" style="width:150px; height:150px; object-fit: cover;">
+                    </div>
+                  @endforeach
+                </div>
+
+                <div id="preview" class="mt-3 d-flex flex-wrap"></div>
+
                 <input type="file" class="form-control" id="images" name="images[]" multiple accept="image/*" />
               </div>
               <br>
               <div class="form-group">
                 <label for="itemname">商品名</label>
-                <input type="text" class="form-control" id="itemname" name="itemname" value="{{ old('itemname') }}" />
+                <input type="text" class="form-control" id="itemname" name="itemname" value="{{ session('itemname') }}" />
               </div>
               <br>
               <div class="form-group">
                 <label for="price">金額</label>
-                <input type="text" class="form-control" id="price" name="price" value="{{ old('price') }}" />
+                <input type="text" class="form-control" id="price" name="price" value="{{ session('price') }}" />
               </div>
               <br>
               <div class="form-group">
                 <label for="state">商品状態</label>
                 <select name="state" id="state" class="form-control">
-                    <option value="" disabled {{ old('state', $item->state ?? '') === '' ? 'selected' : '' }}>選択してください</option>
+                    <option value="" disabled {{ session('state') === null ? 'selected' : '' }}>選択してください</option>
                     @foreach ($states as $value => $label)
-                        <option value="{{ $value }}" {{ old('state', $item->state ?? '') == $value ? 'selected' : '' }}>
+                        <option value="{{ $value }}" {{ session('state') == $value ? 'selected' : '' }}>
                             {{ $label }}
                         </option>
                     @endforeach
@@ -45,7 +56,7 @@
               <br>
               <div class="form-group">
                 <label for="presentation">商品説明</label>
-                <input type="text" class="form-control" id="presentation" name="presentation" value="{{ old('presentation') }}" />
+                <textarea class="form-control" id="presentation" name="presentation" rows="3">{{ session('presentation') }}</textarea>
               </div>
               <br>
               <div class="text-center">
@@ -57,4 +68,41 @@
       </div>
     </div>
   </div>
+
+<script>
+  document.getElementById('images').addEventListener('change', function(e) {
+
+      const sessionPreview = document.getElementById('session-preview');
+      if (sessionPreview) {
+        sessionPreview.classList.add('d-none');
+      }
+    
+    const preview = document.getElementById('preview');
+    preview.innerHTML = ''; 
+    const files = e.target.files;
+
+    if (files.length > 10) {
+      alert('画像は10枚までです');
+      e.target.value = ''; 
+      return;
+    }
+
+    Array.from(files).forEach(file => {
+      if (!file.type.match('image.*')) {
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.classList.add('img-thumbnail', 'm-1');
+        img.style.width = '100px';
+        img.style.height = '100px';
+        preview.appendChild(img);
+      }
+      reader.readAsDataURL(file);
+    });
+  });
+</script>
 @endsection

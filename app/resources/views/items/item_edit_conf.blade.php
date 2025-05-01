@@ -19,11 +19,17 @@
               <dt class="col-sm-3">商品画像</dt>
               <dd class="col-sm-9">
                 <div class="row">
-                @foreach (session('items', []) as $path)
-                  <div class="col-md-3 mb-3">
-                      <img src="{{ asset('storage/items/' . $path) }}" class="img-fluid rounded shadow" alt="商品画像">
-                  </div>
-                @endforeach
+                  @foreach (session('existing_images', []) as $path)
+                    <div class="col-md-3 mb-3">
+                      <img src="{{ asset('storage/' . $path) }}" class="img-fluid rounded shadow" alt="既存商品画像" style="width:150px; height:150px; object-fit: cover;">
+                    </div>
+                  @endforeach
+
+                  @foreach (session('images', []) as $path)
+                    <div class="col-md-3 mb-3">
+                      <img src="{{ asset('storage/' . $path) }}" class="img-fluid rounded shadow" alt="商品画像" style="width:150px; height:150px; object-fit: cover;">
+                    </div>
+                  @endforeach
                 </div>
               </dd>
 

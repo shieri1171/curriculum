@@ -4,10 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Item extends Model
 {
     use HasFactory;
+
+    protected static function booted()
+    {
+        static::addGlobalScope('item_delflg', function (Builder $builder) {
+            $builder->where('del_flg', 0);
+        });
+    }
 
     public function user() {
         return $this->belongsTo('App\Models\User');
@@ -48,5 +56,7 @@ class Item extends Model
     {
         return self::ITEM_STATES[$this->state];
     }
+
+
 
 }

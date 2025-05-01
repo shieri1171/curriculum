@@ -73,12 +73,13 @@ class UserController extends Controller
     }
 
     public function profileeditcomp(Request $request, User $user) {
+        $user = auth()->user();
+        
         if ($request->hasFile('image')) {
         $path = $request->file('image')->store('user_images', 'public');
         $user->image = $path;
         }
 
-        $user = auth()->user();
         $user->username = $request['username'];
         $user->profile = $request['profile'];
         $user->name = $request['name'];
@@ -88,7 +89,7 @@ class UserController extends Controller
 
         $user->save();
 
-        return view('users.profile_edit_comp');
+        return view('users.profile_edit_comp', compact('user'));
     }
 
     //アカウント削除
@@ -101,21 +102,19 @@ class UserController extends Controller
     }
 
     //フォロー
-    public function follow(Request $request) {
+    public function follow($followId) {
 
         $user = auth()->user();
-        $followId = $request->input('follow_id');
         
         $isFollowing  = Follow::where('follower_id', $user->id)
-                    ->where('follow_id', $followId)
-                    ->first();
+                        ->where('follow_id', $followId)
+                        ->first();
 
         if ($isFollowing ) {
             $isFollowing ->delete();
             // return response()->json(['status' => 'unfollowed']);
 
-            $item = Item::with('itemImages')->find($request->input('item_id'));
-            return view('items.item_info', compact('item'));
+            return redirect()->back();
         } else {
             Follow::create([
                 'follower_id' => $user->id,
@@ -123,8 +122,7 @@ class UserController extends Controller
             ]);
             // return response()->json(['status' => 'followed']);
 
-            $item = Item::with('itemImages')->find($request->input('item_id'));
-            return view('items.item_info', compact('item'));
+            return redirect()->back();
         }
     }
 

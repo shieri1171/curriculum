@@ -10,8 +10,8 @@
           <h4 class="mb-0">商品の修正が完了しました</h4>
         </div>
         <div class="card-body text-center">
-            <a href="{{ route('item.info') }}" class="btn btn-primary">商品画面へ</a>
-            <a href="{{ route('userpage') }}" class="btn btn-primary">マイページへ</a>
+            <a href="{{ route('item.info', ['item' => $item->id]) }}" class="btn btn-primary">商品画面へ</a>
+            <a href="{{ route('top') }}" class="btn btn-primary">トップページへ</a>
         </div>
       </div>
     </div>

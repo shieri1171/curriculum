@@ -1,5 +1,4 @@
-@extends('layouts.layout')
-
+@extends(auth()->check() && auth()->user()->user_flg === 0 ? 'layouts.managiment' : 'layouts.layout')
 @section('content')
 
 <div class="container mt-5">
@@ -7,12 +6,12 @@
     <div class="col-12 col-md-8 mx-auto">
       <div class="row">
         <!-- 商品画像 -->
-        <div class="col-12 col-md-6">
-          <div id="itemCarousel" class="carousel slide mb-3" data-bs-ride="carousel">
+        <div class="col-12 col-md-6 d-flex justify-content-center">
+          <div id="itemCarousel" class="carousel slide mb-3" data-bs-ride="carousel" style="width: 300px;">
             <div class="carousel-inner rounded shadow">
               @foreach ($item->itemImages as $key => $image)
                 <div class="carousel-item {{ $key === 0 ? 'active' : '' }}">
-                  <img src="{{ asset('storage/' . $image->image_path) }}" class="d-block w-100" alt="{{ $item->name }}">
+                  <img src="{{ asset('storage/' . $image->image_path) }}" alt=" {{ $item->name }} "  class="d-block w-100" style="height: 300px; object-fit: cover; display: block; margin: 0 auto;">
                 </div>
               @endforeach
             </div>
@@ -30,14 +29,12 @@
 
         <!-- 商品情報 -->
         <div class="col-12 col-md-6">
-          <br>
           <h2>{{ $item->itemname }}</h2>
-          <br>
-          <p><strong>金額：</strong>¥{{ number_format($item->price) }}</p>
-          <br>
-          <p><strong>状態：</strong>{{ \App\Models\Item::ITEM_STATES[$item->state] }}</p>
-          <br>
-          <p class="text-muted">{{ $item->presentation }}</p>
+          <p class="mt-3"><strong>金額：</strong>¥{{ number_format($item->price) }}</p>
+          <p class="mt-3"><strong>状態：</strong>{{ \App\Models\Item::ITEM_STATES[$item->state] }}</p>
+          <p class="text-muted mt-3" style="max-height: 10.5em; overflow-y: auto; border: 1px solid #ccc; padding: 10px;">
+              {!! nl2br(e($item->presentation)) !!}
+          </p>
         </div>
       </div>
         
@@ -64,16 +61,26 @@
           @endif
 
           @auth
-            <form action="{{ route('comment') }}" method="POST">
-              @csrf
-              <input type="hidden" name="item_id" value="{{ $item->id }}">
+            @if(auth()->user()->user_flg === 0)
               <div class="input-group mb-1">
-                <input type="text" name="comment" class="form-control" placeholder="コメントを入力してください" maxlength="100">
-                <button type="submit" class="btn btn-primary">送信</button>
+                <input type="text" class="form-control" placeholder="管理ユーザーはコメントできません" disabled>
+                <button class="btn btn-secondary" disabled>送信</button>
               </div>
-            </form>
+            @else
+              <form action="{{ route('comment') }}" method="POST">
+                @csrf
+                <input type="hidden" name="item_id" value="{{ $item->id }}">
+                <div class="input-group mb-1">
+                  <input type="text" name="comment" class="form-control" placeholder="コメントを入力してください" maxlength="100">
+                  <button type="submit" class="btn btn-primary">送信</button>
+                </div>
+              </form>
+            @endif
           @else
-            <p>コメントするには <a href="{{ route('login') }}">ログイン</a> が必要です。</p>
+            <div class="input-group mb-1">
+              <input type="text" class="form-control" placeholder="コメントするにはログインが必要です" disabled>
+              <a href="{{ route('login') }}" class="btn btn-primary">ログイン</a>
+            </div>
           @endauth
 
         </div>
@@ -84,29 +91,31 @@
       <div class="border p-3 rounded d-flex justify-content-center align-items-center pt-4 mt-4">
         <div class="d-flex align-items-center">
           <div>
-            <img src="{{ asset('storage/' . $item->user->image) }}" class="rounded-circle me-4" alt="出品者画像" style="width: 60px; height: 60px;">
+            <img src="{{ asset('storage/' . $item->user->image) }}" class="rounded-circle me-4" alt="出品者画像" style="width: 80px; height: 80px;">
           </div>
 
-          <div class="d-flex flex-column justify-content-between ms-3 flex-grow-1">
+          <div class="d-flex flex-column justify-content-center align-items-start ms-3 flex-grow-1">
             <div class="fw-bold">{{ $item->user->username }}</div>
 
-            <div class="mt-2 d-flex gap-2">
+            <div class="mt-2 d-flex gap-2 align-items-center">
               @auth
-                @if (auth()->user()->id == $item->user->id || auth()->user()->is_admin)
+                @if (auth()->user()->id == $item->user->id || auth()->user()->user_flg === 0)
                     <a href="{{ route('userpage', ['user' => $item->user->id]) }}" class="btn btn-secondary btn-sm">詳細</a>
-                @elseif (auth()->user()->follows()->where('follower_id', $item->user->id)->exists()) 
-                  <form action="{{ route('follow') }}" method="POST" id="follow-form">
+                @else
+                  @php
+                    $isFollowing = auth()->user()->follows()->where('follow_id', $item->user->id)->exists();
+                  @endphp
+                  <form action="{{ route('follow', $user->id) }}" method="POST" class="follow-form">
                     @csrf
                     <input type="hidden" name="follow_id" value="{{ $item->user->id }}">
-                    <input type="hidden" name="item_id" value="{{ $item->id }}"> <!-- 非同期にて今だけ -->
-                    <button type="submit" id="follow-btn" class="btn {{ $isFollowing ? 'btn-outline-secondary' : 'btn-primary' }}">
+                    <button type="submit" id="follow-btn" class="btn {{ $isFollowing ? 'btn-info' : 'btn-outline-secondary' }} btn-sm">
                       {{ $isFollowing ? 'フォロー解除' : 'フォロー' }}
                     </button>
                   </form>
                   <a href="{{ route('userpage', ['user' => $item->user->id]) }}" class="btn btn-secondary btn-sm">詳細</a>
                 @endif              
               @else
-                <a href="{{ route('login') }}" class="btn btn-outline-primary btn-sm">フォロー</a>
+                <a href="{{ route('login') }}" class="btn btn-outline-secondary btn-sm">フォロー</a>
                 <a href="{{ route('login') }}" class="btn btn-secondary btn-sm">詳細</a>
               @endauth
             </div>
@@ -138,7 +147,7 @@
         <!-- 出品者本人の場合（編集・削除） -->
         @if(auth()->user()->id === $item->user_id)
           <a href="{{ route('item.edit', $item->id) }}" class="btn btn-warning">編集</a>
-          <form action="{{ route('item.delete', $item->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('この画像を削除してもよろしいですか？');">
+          <form action="{{ route('item.delete', $item->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('この商品を削除してもよろしいですか？');">
             @csrf
             @method('DELETE')
             <button type="submit" class="btn btn-danger ml-2">削除</button>
@@ -147,11 +156,18 @@
 
         <!-- 管理者の場合（削除のみ） -->
         @if(auth()->user()->user_flg === 0)
-          <form action="{{ route('item.delete', $item->id) }}" method="POST" style="display:inline;">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-danger">削除</button>
-          </form>
+          @if($item->del_flg === 0)
+            <form action="{{ route('item.delflg', $item->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('この商品をストアから削除してもよろしいですか？');">
+              @csrf
+              @method('DELETE')
+              <button type="submit" class="btn btn-danger btn-sm">削除</button>
+            </form>
+          @else
+            <form action="{{ route('item.restore', $item->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('この商品をストアに復元しますか？');">
+              @csrf
+              <button type="submit" class="btn btn-success btn-sm">復元</button>
+            </form>
+          @endif
         @endif
 
       @else

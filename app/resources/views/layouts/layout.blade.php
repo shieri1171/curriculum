@@ -29,7 +29,7 @@
         <nav class="fixed-top navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container-fluid d-flex justify-content-between align-items-center">
                 <a href="{{ url('/') }}">
-                    <img src="{{ asset('storage/unnamed.png') }}" alt="メルカリ" style="width: 40px; height: 40px;">
+                    <img src="{{ asset('storage/unnamed.png') }}" alt="メルカリ" style="width: 60px; height: 60px;">
                 </a>
                 <div class="col-6 col-sm-6 col-md-6 col-lg-4 mx-auto">
                     <div class="input-group" role="button" data-bs-toggle="modal" data-bs-target="#searchModal">
@@ -41,16 +41,16 @@
                 </div>
                 @if(Auth::check())
                     <div class="my-navbar-cotrol">
-                        <a type="button" class="my-navbar-item btn btn-outline-primary" href="{{ route('item') }}">+ 出品</a >
+                        <a type="button" style="background-color: white; color: orange; border: 1px solid orange; border-radius: 4px;" class="my-navbar-item btn btn-outline-primary" href="{{ route('item') }}">+ 出品</a >
                         <span class="my-navbar-item" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" style="cursor: pointer;">
-                            <img src="{{ asset('storage/' . Auth::user()->image) }}" class="rounded-circle" alt="User Image" style="width: 40px; height: 40px;">
+                            <img src="{{ asset('storage/' . Auth::user()->image) }}" class="rounded-circle" alt="User Image" style="width: 60px; height: 60px; object-fit: cover;">
                         </span>
                     </div>
 
                 @else
                     <div class="my-navbar-cotrol">
-                        <a type="button" class="my-navbar-item btn btn-outline-primary" href="{{ route('login') }}">ログイン</a >
-                        <a type="button" class="my-navbar-item btn btn-outline-primary" href="{{ route('signup') }}">会員登録</a >
+                        <a type="button" style="background-color: orange; color: white; border: 1px solid orange; border-radius: 4px;" class="my-navbar-item btn btn-outline-primary" href="{{ route('login') }}">ログイン</a >
+                        <a type="button" style="background-color: white; color: orange; border: 1px solid orange; border-radius: 4px;" class="my-navbar-item btn btn-outline-primary" href="{{ route('signup') }}">会員登録</a >
                     </div>
                 @endif
                 
@@ -101,6 +101,7 @@
                 </div>
                 <div class="offcanvas-body">
                     <ul class="list-unstyled">
+                        <li><a href="{{ route('top') }}" class="nav-link fs-5 border-bottom pb-2 mb-2">トップページへ</a></li>
                         <li><a href="{{ route('favorites') }}" class="nav-link fs-5 border-bottom pb-2 mb-2">いいねした商品</a></li>
                         <li><a href="{{ route('buys') }}" class="nav-link fs-5 border-bottom pb-2 mb-2">購入履歴</a></li>
                         <li><a href="{{ route('follows') }}" class="nav-link fs-5 border-bottom pb-2 mb-2">フォロー一覧</a></li>

@@ -10,7 +10,7 @@
 
         @foreach ($sells as $item)
           <div class="col-md-6 col-sm-12 mb-4"> 
-            <div class="border p-3 rounded d-flex justify-content-center align-items-center pt-4 mt-4">
+            <div class="border p-3 d-flex justify-content-center align-items-center pt-4 mt-4">
               <div class="d-flex align-items-center">
                 <div>
                   <img src="{{ asset('storage/' . $item->mainImage->image_path) }}" class="me-4" alt="商品画像" style="width: 140px; height: 140px;">
