@@ -65,9 +65,9 @@
               <div class="form-group">
                 <label for="state">商品状態</label>
                 <select name="state" id="state" class="form-control">
-                  <option value="" disabled {{ session('state') === null && old('state') === null ? 'selected' : '' }}>選択してください</option>
+                  <option value="" disabled {{ session('state') === null && old('state', $item->state ?? '') === null ? 'selected' : '' }}>選択してください</option>
                   @foreach ($states as $value => $label)
-                    <option value="{{ $value }}" {{ (session('state') == $value || old('state') == $value) ? 'selected' : '' }}>
+                    <option value="{{ $value }}" {{ session('state') == $value || old('state', $item->state ?? '') == $value ? 'selected' : '' }}>
                       {{ $label }}
                     </option>
                   @endforeach

@@ -12,6 +12,11 @@ use App\Models\Favorite;
 use App\Models\Comment; 
 use App\Models\ItemImage;
 
+use App\Http\Requests\Createitem;
+use App\Http\Requests\Edititem;
+use App\Http\Requests\Createbuy;
+use App\Http\Requests\Createcomment;
+
 class RegistrationController extends Controller
 {
     //新規登録
@@ -22,7 +27,7 @@ class RegistrationController extends Controller
         return view('items.item', compact('states'));
     }
 
-    public function itemconf(Request $request) {
+    public function itemconf(Createitem $request) {
         if ($request->hasFile('images')) {
             $imagePaths = [];
             foreach ($request->file('images') as $image) {
@@ -42,7 +47,7 @@ class RegistrationController extends Controller
         return view('Items.item_conf');
     }
 
-    public function itemcomp(Request $request) {
+    public function itemcomp(Createitem $request) {
         $item = new Item;
 
         $item->itemname = $request->session()->get('itemname');
@@ -82,7 +87,7 @@ class RegistrationController extends Controller
         return view('Items.item_edit', compact('item', 'states'));
     }
 
-    public function itemeditconf(Request $request, Item $item) {
+    public function itemeditconf(Edititem $request, Item $item) {
 
         if ($request->hasFile('images')) {
             $imagePaths = [];
@@ -105,7 +110,7 @@ class RegistrationController extends Controller
         return view('Items.item_edit_conf', compact('item'));
     }
 
-    public function itemeditcomp(Request $request, Item $item) {
+    public function itemeditcomp(Edititem $request, Item $item) {
 
         $item->itemname = $request->session()->get('itemname');
         $item->price = $request->session()->get('price');
@@ -161,7 +166,7 @@ class RegistrationController extends Controller
         $item->delete();
 
         \Session::flash('err_msg', '削除しました。');
-        return view('Items.item_delete_comp');
+        return view('Items.item_delete_comp', compact('item'));
     }
 
     //購入 条件分岐　情報ありの場合は直接確認画面へ
@@ -187,7 +192,7 @@ class RegistrationController extends Controller
         }
     }
 
-    public function buyconf(Request $request) {
+    public function buyconf(Createbuy $request) {
 
         $user = auth()->user();
 
@@ -205,7 +210,7 @@ class RegistrationController extends Controller
         return view('buys.buy_conf', compact('item'));
     }
 
-    public function buycomp(Request $request) {
+    public function buycomp(Createbuy $request) {
         $user = auth()->user();
         $buy = new Buy();
 
@@ -260,12 +265,12 @@ class RegistrationController extends Controller
     }
 
     //コメント
-    public function comment(Request $request) {
+    public function comment(Createcomment $request) {
 
         Comment::create([
             'user_id' => Auth::id(),
             'item_id' => $request->item_id,
-            'text' => $request->comment,
+            'text' => $request->text,
         ]);
 
         return redirect()->route('item.info', ['item' => $request->item_id]);

@@ -4,16 +4,16 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col col-md-offset-3 col-md-6">
+        @if($errors->any())
+          <div class="alert alert-danger">
+            @foreach($errors->all() as $message)
+              <p>{{ $message }}</p>
+            @endforeach
+          </div>
+        @endif
         <nav class="card mt-5">
           <div class="card-header text-center">出品</div>
           <div class="card-body">
-            @if($errors->any())
-              <div class="alert alert-danger">
-                @foreach($errors->all() as $message)
-                  <p>{{ $message }}</p>
-                @endforeach
-              </div>
-            @endif
             <form action="{{ route('item.conf') }}" method="POST" enctype="multipart/form-data">
               @csrf
               <div class="form-group">
@@ -34,20 +34,20 @@
               <br>
               <div class="form-group">
                 <label for="itemname">商品名</label>
-                <input type="text" class="form-control" id="itemname" name="itemname" value="{{ session('itemname') }}" />
+                <input type="text" class="form-control" id="itemname" name="itemname" value="{{ session('itemname', old('itemname')) }}" />
               </div>
               <br>
               <div class="form-group">
                 <label for="price">金額</label>
-                <input type="text" class="form-control" id="price" name="price" value="{{ session('price') }}" />
+                <input type="text" class="form-control" id="price" name="price" value="{{ session('price', old('price')) }}" />
               </div>
               <br>
               <div class="form-group">
                 <label for="state">商品状態</label>
                 <select name="state" id="state" class="form-control">
-                    <option value="" disabled {{ session('state') === null ? 'selected' : '' }}>選択してください</option>
+                    <option value="" disabled {{ session('state') === null && old('state') === null ? 'selected' : '' }}>選択してください</option>
                     @foreach ($states as $value => $label)
-                        <option value="{{ $value }}" {{ session('state') == $value ? 'selected' : '' }}>
+                        <option value="{{ $value }}" {{ session('state') == $value || old('state') == $value ? 'selected' : '' }}>
                             {{ $label }}
                         </option>
                     @endforeach
@@ -56,7 +56,7 @@
               <br>
               <div class="form-group">
                 <label for="presentation">商品説明</label>
-                <textarea class="form-control" id="presentation" name="presentation" rows="3">{{ session('presentation') }}</textarea>
+                <textarea class="form-control" id="presentation" name="presentation" rows="3">{{ session('presentation', old('presentation')) }}</textarea>
               </div>
               <br>
               <div class="text-center">

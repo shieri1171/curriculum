@@ -15,7 +15,8 @@ class ManagerController extends Controller
 
     public function manageruser(User $user) {
 
-        $users = User::orderBy('created_at', 'desc')
+        $users = User::withoutGlobalScope('active')
+                     ->orderBy('created_at', 'desc')
                      ->get();
 
         return view('management.manager_user', compact('users'));
@@ -23,7 +24,8 @@ class ManagerController extends Controller
 
     public function manageritem(Item $item) {
 
-        $items = Item::with('mainImage')
+        $items = Item::withoutGlobalScope('item_delflg')
+                     ->with('mainImage')
                      ->orderBy('created_at', 'desc')
                      ->get();
 

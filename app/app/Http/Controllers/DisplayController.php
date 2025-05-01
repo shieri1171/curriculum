@@ -10,6 +10,9 @@ use App\Models\Follow;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 
+use App\Http\Requests\CreateData;
+
+
 class DisplayController extends Controller
 {
     //top

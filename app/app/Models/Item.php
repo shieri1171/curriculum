@@ -13,7 +13,10 @@ class Item extends Model
     protected static function booted()
     {
         static::addGlobalScope('item_delflg', function (Builder $builder) {
-            $builder->where('del_flg', 0);
+            $builder->where('del_flg', 0)
+                    ->whereHas('user', function ($q) {
+                        $q->where('del_flg', 0);
+                    });
         });
     }
 
@@ -57,6 +60,16 @@ class Item extends Model
         return self::ITEM_STATES[$this->state];
     }
 
-
+    protected static function boot()
+    {
+        parent::boot();
+    
+        static::deleting(function ($item) {
+            $user->item_images()->delete();
+            $user->comments()->delete();
+            $user->favorites()->delete();
+            $user->buys()->delete();
+        });
+    }
 
 }

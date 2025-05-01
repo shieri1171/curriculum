@@ -32,8 +32,8 @@
               </div>
               <br>
               <div class="form-group">
-                <label for="password-confirm">パスワード（確認）</label>
-                <input type="password" class="form-control" id="password-confirm" name="password_confirmation">
+                <label for="password_confirmation">パスワード（確認）</label>
+                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation">
               </div>
               <br>
               <div class="text-center">

@@ -4,12 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable; 
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Builder; 
 use Illuminate\Database\Eloquent\Model;
 
 class User extends Authenticatable 
 {
     use HasFactory, Notifiable;
+
+    protected static function booted()
+    {
+        static::addGlobalScope('active', function (Builder $builder) {
+            $builder->where('del_flg', 0);
+        });
+    }
 
     //メール文変更
     public function sendPasswordResetNotification($token)
@@ -56,4 +64,17 @@ class User extends Authenticatable
         return $this->hasMany(Follow::class, 'follow_id');
     }
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($user) {
+            $user->item()->delete();
+            $user->comment()->delete();
+            $user->favorite()->delete();
+            $user->follows()->delete();
+            $user->followers()->delete();
+            $user->buy()->delete();
+        });
+    }
 }

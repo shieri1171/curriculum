@@ -43,81 +43,83 @@
           <!-- コメント欄 -->
           <h4>コメント</h4>
           <div class="border p-3 rounded mb-4">
-            @if(is_null($item->comments))
-            <p class="text-muted">まだコメントはありません。</p>
-          @else
-            <ul class="list-group">
-              @foreach($comments as $comment)
-                @php
-                  $isOwner = $comment->user_id === $item->user_id;
-                @endphp
-                <li class="list-group-item {{ $isOwner ? 'text-end bg-light' : '' }}">
-                    <p class="mb-0 fw-bold"><strong>{{ $comment->user->username }}</strong></p>
-                    <p class="mb-0">{{ $comment->text }}</p>
-                    <p class="mb-0 text-muted small">{{ $comment->created_at->format('Y-m-d H:i') }}</p>
-                </li>
-              @endforeach
-            </ul>
-          @endif
-
-          @auth
-            @if(auth()->user()->user_flg === 0)
-              <div class="input-group mb-1">
-                <input type="text" class="form-control" placeholder="管理ユーザーはコメントできません" disabled>
-                <button class="btn btn-secondary" disabled>送信</button>
-              </div>
+            @if($comments->isEmpty())
+              <p class="text-muted">まだコメントはありません。</p>
             @else
-              <form action="{{ route('comment') }}" method="POST">
-                @csrf
-                <input type="hidden" name="item_id" value="{{ $item->id }}">
-                <div class="input-group mb-1">
-                  <input type="text" name="comment" class="form-control" placeholder="コメントを入力してください" maxlength="100">
-                  <button type="submit" class="btn btn-primary">送信</button>
-                </div>
-              </form>
-            @endif
-          @else
-            <div class="input-group mb-1">
-              <input type="text" class="form-control" placeholder="コメントするにはログインが必要です" disabled>
-              <a href="{{ route('login') }}" class="btn btn-primary">ログイン</a>
-            </div>
-          @endauth
-
-        </div>
-      </div>
-
-      <!-- 出品者情報 -->
-      <h5>出品者情報</h5>
-      <div class="border p-3 rounded d-flex justify-content-center align-items-center pt-4 mt-4">
-        <div class="d-flex align-items-center">
-          <div>
-            <img src="{{ asset('storage/' . $item->user->image) }}" class="rounded-circle me-4" alt="出品者画像" style="width: 80px; height: 80px;">
-          </div>
-
-          <div class="d-flex flex-column justify-content-center align-items-start ms-3 flex-grow-1">
-            <div class="fw-bold">{{ $item->user->username }}</div>
-
-            <div class="mt-2 d-flex gap-2 align-items-center">
-              @auth
-                @if (auth()->user()->id == $item->user->id || auth()->user()->user_flg === 0)
-                    <a href="{{ route('userpage', ['user' => $item->user->id]) }}" class="btn btn-secondary btn-sm">詳細</a>
-                @else
+              <ul class="list-group">
+                @foreach($comments as $comment)
                   @php
-                    $isFollowing = auth()->user()->follows()->where('follow_id', $item->user->id)->exists();
+                    $isOwner = $comment->user_id === $item->user_id;
                   @endphp
-                  <form action="{{ route('follow', $user->id) }}" method="POST" class="follow-form">
-                    @csrf
-                    <input type="hidden" name="follow_id" value="{{ $item->user->id }}">
-                    <button type="submit" id="follow-btn" class="btn {{ $isFollowing ? 'btn-info' : 'btn-outline-secondary' }} btn-sm">
-                      {{ $isFollowing ? 'フォロー解除' : 'フォロー' }}
-                    </button>
-                  </form>
-                  <a href="{{ route('userpage', ['user' => $item->user->id]) }}" class="btn btn-secondary btn-sm">詳細</a>
-                @endif              
+                  <li class="list-group-item {{ $isOwner ? 'text-end bg-light' : '' }}">
+                      <p class="mb-0 fw-bold"><strong>{{ $comment->user->username }}</strong></p>
+                      <p class="mb-0">{{ $comment->text }}</p>
+                      <p class="mb-0 text-muted small">{{ $comment->created_at->format('Y-m-d H:i') }}</p>
+                  </li>
+                @endforeach
+              </ul>
+            @endif
+
+            @auth
+              @if(auth()->user()->user_flg === 0)
+                <div class="input-group mb-1">
+                  <input type="text" class="form-control" placeholder="管理ユーザーはコメントできません" disabled>
+                  <button class="btn btn-secondary" disabled>送信</button>
+                </div>
               @else
-                <a href="{{ route('login') }}" class="btn btn-outline-secondary btn-sm">フォロー</a>
-                <a href="{{ route('login') }}" class="btn btn-secondary btn-sm">詳細</a>
-              @endauth
+                <form action="{{ route('comment') }}" method="POST">
+                  @csrf
+                  <input type="hidden" name="item_id" value="{{ $item->id }}">
+                  <div class="input-group mb-1">
+                    <input type="text" name="text" class="form-control" placeholder="コメントを入力してください" maxlength="100">
+                    <button type="submit" class="btn btn-primary">送信</button>
+                  </div>
+                </form>
+              @endif
+            @else
+              <div class="input-group mb-1">
+                <input type="text" class="form-control" placeholder="コメントするにはログインが必要です" disabled>
+                <a href="{{ route('login') }}" class="btn btn-primary">ログイン</a>
+              </div>
+            @endauth
+          </div>
+        </div>
+
+        <!-- 出品者情報 -->
+        <h5>出品者情報</h5>
+        <div class="border p-3 rounded d-flex justify-content-center align-items-center pt-4 mt-4">
+          <div class="d-flex align-items-center">
+            <div>
+              <img src="{{ asset('storage/' . $item->user->image) }}" class="rounded-circle me-4" alt="出品者画像" style="width: 80px; height: 80px;">
+            </div>
+
+            <div class="d-flex flex-column justify-content-center align-items-start ms-3 flex-grow-1">
+              <div class="fw-bold">{{ $item->user->username }}</div>
+
+              <div class="mt-2 d-flex gap-2 align-items-center">
+                @auth
+                  @if (auth()->user()->id == $item->user->id || auth()->user()->user_flg === 0)
+                      <a href="{{ route('userpage', ['user' => $item->user->id]) }}" class="btn btn-secondary btn-sm">詳細</a>
+                  @else
+                      @if (auth()->user()->follows()->where('follow_id', $user->id)->exists())
+                          <form action="{{ route('follow', $user->id) }}" method="POST">
+                              @csrf
+                              <button type="submit" class="btn btn-info btn-sm">フォロー解除</button>
+                          </form>
+                      @else
+                          <form action="{{ route('follow', $user->id) }}" method="POST">
+                              @csrf
+                              <button type="submit" class="btn btn-outline-secondary btn-sm">フォロー</button>
+                          </form>
+                      @endif
+                    </form>
+                    <a href="{{ route('userpage', ['user' => $item->user->id]) }}" class="btn btn-secondary btn-sm">詳細</a>
+                  @endif              
+                @else
+                  <a href="{{ route('login') }}" class="btn btn-outline-secondary btn-sm">フォロー</a>
+                  <a href="{{ route('login') }}" class="btn btn-secondary btn-sm">詳細</a>
+                @endauth
+              </div>
             </div>
           </div>
         </div>

@@ -8,6 +8,9 @@ use App\Models\User;
 use App\Models\Item;
 use App\Models\Follow;
 
+use App\Http\Requests\CreateData;
+
+
 class UserController extends Controller
 {
     //ログイン
@@ -15,7 +18,7 @@ class UserController extends Controller
         return view('Auth.login');
     }
 
-    public function signup(Request $request) {
+    public function signup(Createuser $request) {
 
         return view('Auth.signup', [
             'email' => $request->query('email'),
@@ -24,7 +27,7 @@ class UserController extends Controller
     }
 
     //新規登録
-    public function signupconf(Request $request) {
+    public function signupconf(Createuser $request) {
 
         $request->session()->put([
             'email' => $request->input('email'),
@@ -35,7 +38,7 @@ class UserController extends Controller
         return view('Auth.signup_conf');
     }
 
-    public function signupcomp(Request $request) {
+    public function signupcomp(Createuser $request) {
         $user = new User;
 
         $user->email = $request->session()->get('email');
@@ -58,7 +61,7 @@ class UserController extends Controller
     }
 
     //購入者情報登録
-    public function userinfo(Request $request)
+    public function userinfo(Createbuy $request)
     {
         $user = User::find(session('user_id'));
 
@@ -72,7 +75,7 @@ class UserController extends Controller
 
     }
 
-    public function profileeditcomp(Request $request, User $user) {
+    public function profileeditcomp(Createprofile $request, User $user) {
         $user = auth()->user();
         
         if ($request->hasFile('image')) {
@@ -97,7 +100,6 @@ class UserController extends Controller
         $user = auth()->user();
         $user->delete();
 
-        \Session::flash('err_msg', '削除しました。');
         return view('top');
     }
 
