@@ -140,7 +140,7 @@ return [
     'starts_with' => ':attributeは次のいずれかで始まる必要があります: :values。',
     'string' => ':attributeは文字列である必要があります。',
     'timezone' => ':attributeは有効なタイムゾーンである必要があります。',
-    'unique' => ':attributeは既に使用されています。',
+    'unique' => 'この:attributeは既に使用されています。',
     'uploaded' => ':attributeのアップロードに失敗しました。',
     'uppercase' => ':attributeは大文字である必要があります。',
     'url' => ':attributeは有効なURLである必要があります。',

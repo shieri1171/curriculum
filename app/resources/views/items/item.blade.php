@@ -4,16 +4,16 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col col-md-offset-3 col-md-6">
-        @if($errors->any())
-          <div class="alert alert-danger">
-            @foreach($errors->all() as $message)
-              <p>{{ $message }}</p>
-            @endforeach
-          </div>
-        @endif
         <nav class="card mt-5">
           <div class="card-header text-center">出品</div>
           <div class="card-body">
+            @if($errors->any())
+              <div class="alert alert-danger">
+                @foreach($errors->all() as $message)
+                  <p>{{ $message }}</p>
+                @endforeach
+              </div>
+            @endif
             <form action="{{ route('item.conf') }}" method="POST" enctype="multipart/form-data">
               @csrf
               <div class="form-group">

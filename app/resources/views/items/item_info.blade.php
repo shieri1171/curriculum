@@ -67,7 +67,7 @@
                   <button class="btn btn-secondary" disabled>送信</button>
                 </div>
               @else
-                <form action="{{ route('comment') }}" method="POST">
+                <form id="commentForm">
                   @csrf
                   <input type="hidden" name="item_id" value="{{ $item->id }}">
                   <div class="input-group mb-1">
@@ -101,18 +101,17 @@
                   @if (auth()->user()->id == $item->user->id || auth()->user()->user_flg === 0)
                       <a href="{{ route('userpage', ['user' => $item->user->id]) }}" class="btn btn-secondary btn-sm">詳細</a>
                   @else
-                      @if (auth()->user()->follows()->where('follow_id', $user->id)->exists())
-                          <form action="{{ route('follow', $user->id) }}" method="POST">
+                      @if (auth()->user()->follows()->where('follow_id', $item->user->id)->exists())
+                          <form action="{{ route('follow', $item->user->id) }}" method="POST">
                               @csrf
                               <button type="submit" class="btn btn-info btn-sm">フォロー解除</button>
                           </form>
                       @else
-                          <form action="{{ route('follow', $user->id) }}" method="POST">
+                          <form action="{{ route('follow', $item->user->id) }}" method="POST">
                               @csrf
                               <button type="submit" class="btn btn-outline-secondary btn-sm">フォロー</button>
                           </form>
                       @endif
-                    </form>
                     <a href="{{ route('userpage', ['user' => $item->user->id]) }}" class="btn btn-secondary btn-sm">詳細</a>
                   @endif              
                 @else
@@ -180,6 +179,33 @@
     </div>
   </div>
 </div>
+
+<!-- コメント処理(Ajax) -->
+<script>
+  $('#commentForm').on('submit', function(e) {
+    e.preventDefault();
+
+    $.ajax({
+      url: '{{ route("comment") }}', 
+      method: 'POST',
+      data: $(this).serialize(),
+      success: function(response) {
+        let newComment = `
+          <li class="list-group-item">
+            <p class="mb-0 fw-bold"><strong>${response.user.username}</strong></p>
+            <p class="mb-0">${response.text}</p>
+            <p class="mb-0 text-muted small">${response.created_at}</p>
+          </li>
+        `;
+        $('.list-group').append(newComment);
+        $('#commentForm')[0].reset();
+      },
+      error: function() {
+        alert('コメント送信に失敗しました');
+      }
+    });
+  });
+</script>
 
 <!-- いいね処理(Ajax) -->
 <script>

@@ -3,13 +3,7 @@
 @section('content')
   <div class="container text-center">
     <div class="row">
-        @if (session('message'))
-            <div class="alert alert-warning">
-                {{ session('message') }}
-            </div>
-        @endif
-        <div class="display-1 mt-5 mb-5 w-100">メルカリへようこそ</div>
-
+      <div class="display-1 mt-5 mb-5 w-100">メルカリへようこそ</div>
         <div class="row row-cols-3 row-cols-md-3 row-cols-xl-5">
           @foreach ($items as $item)
             <div class="col mb-4">

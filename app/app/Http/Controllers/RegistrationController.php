@@ -47,7 +47,7 @@ class RegistrationController extends Controller
         return view('Items.item_conf');
     }
 
-    public function itemcomp(Createitem $request) {
+    public function itemcomp(Request $request) {
         $item = new Item;
 
         $item->itemname = $request->session()->get('itemname');
@@ -110,7 +110,7 @@ class RegistrationController extends Controller
         return view('Items.item_edit_conf', compact('item'));
     }
 
-    public function itemeditcomp(Edititem $request, Item $item) {
+    public function itemeditcomp(Request $request, Item $item) {
 
         $item->itemname = $request->session()->get('itemname');
         $item->price = $request->session()->get('price');
@@ -210,7 +210,7 @@ class RegistrationController extends Controller
         return view('buys.buy_conf', compact('item'));
     }
 
-    public function buycomp(Createbuy $request) {
+    public function buycomp(Request $request) {
         $user = auth()->user();
         $buy = new Buy();
 
@@ -267,13 +267,17 @@ class RegistrationController extends Controller
     //コメント
     public function comment(Createcomment $request) {
 
-        Comment::create([
+        $comment = Comment::create([
             'user_id' => Auth::id(),
             'item_id' => $request->item_id,
             'text' => $request->text,
         ]);
 
-        return redirect()->route('item.info', ['item' => $request->item_id]);
+        return response()->json([
+            'user' => ['username' => Auth::user()->username],
+            'text' => $comment->text,
+            'created_at' => $comment->created_at->format('Y-m-d H:i')
+        ]);
     }
 
 }

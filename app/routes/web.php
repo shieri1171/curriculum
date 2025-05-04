@@ -71,7 +71,7 @@ Route::group(['middleware' => 'auth'], function() {
     //論理削除(管理者処理)
     Route::delete('/user_delflg/{user}', [ManagerController::class, 'userdelflg'])->name('user.delflg');
     // 復元
-    Route::post('/user_restore/{user}', [ManagerController::class, 'userrestore'])->name('user.restore');
+    Route::post('/user_restore/{user_id}', [ManagerController::class, 'userrestore'])->name('user.restore');
     //一般ユーザー⇔管理ユーザー
     Route::patch('/user_flg/{user}', [ManagerController::class, 'userflg'])->name('user.flg');
 

@@ -34,7 +34,7 @@ class LoginController extends Controller
             auth()->logout();
             return redirect()->route('freeze');
         } else {
-            return redirect()->intended(route('top'));
+            return redirect()->route('top');
         }
     }
 

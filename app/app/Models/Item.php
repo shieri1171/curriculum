@@ -10,16 +10,6 @@ class Item extends Model
 {
     use HasFactory;
 
-    protected static function booted()
-    {
-        static::addGlobalScope('item_delflg', function (Builder $builder) {
-            $builder->where('del_flg', 0)
-                    ->whereHas('user', function ($q) {
-                        $q->where('del_flg', 0);
-                    });
-        });
-    }
-
     public function user() {
         return $this->belongsTo('App\Models\User');
     }
@@ -58,18 +48,6 @@ class Item extends Model
     public function getStateLabelAttribute()
     {
         return self::ITEM_STATES[$this->state];
-    }
-
-    protected static function boot()
-    {
-        parent::boot();
-    
-        static::deleting(function ($item) {
-            $user->item_images()->delete();
-            $user->comments()->delete();
-            $user->favorites()->delete();
-            $user->buys()->delete();
-        });
     }
 
 }

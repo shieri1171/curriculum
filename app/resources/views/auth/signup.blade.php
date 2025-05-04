@@ -18,12 +18,12 @@
               @csrf
               <div class="form-group">
                 <label for="email">メールアドレス</label>
-                <input type="text" class="form-control" id="email" name="email" value="{{ request('email') }}" />
+                <input type="text" class="form-control" id="email" name="email" value="{{ old('email') }}" />
               </div>
               <br>
               <div class="form-group">
                 <label for="username">ユーザー名</label>
-                <input type="text" class="form-control" id="username" name="username" value="{{ request('username') }}" />
+                <input type="text" class="form-control" id="username" name="username" value="{{ old('username') }}" />
               </div>
               <br>
               <div class="form-group">

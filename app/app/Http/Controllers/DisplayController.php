@@ -10,9 +10,6 @@ use App\Models\Follow;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 
-use App\Http\Requests\CreateData;
-
-
 class DisplayController extends Controller
 {
     //top
@@ -21,10 +18,13 @@ class DisplayController extends Controller
         $user = Auth::user();
 
         $items = Item::with('mainImage')
-                    ->where('del_flg', 0)
-                    ->where('sell_flg', 0)
-                    ->orderBy('created_at', 'desc')
-                    ->get();
+                     ->where('items.del_flg', 0)
+                     ->whereHas('user', function ($query) {
+                         $query->where('del_flg', 0);
+                     })
+                     ->where('sell_flg', 0)
+                     ->orderBy('created_at', 'desc')
+                     ->get();
         
         return view('top', compact('items', 'user'));
     }
@@ -49,6 +49,10 @@ class DisplayController extends Controller
         }
 
         $items = $query->with('mainImage')
+                       ->where('items.del_flg', 0)
+                       ->whereHas('user', function ($query) {
+                           $query->where('del_flg', 0);
+                       })
                        ->where('sell_flg', 0)
                        ->orderBy('created_at', 'desc')
                        ->get();
@@ -86,7 +90,12 @@ class DisplayController extends Controller
     {
         $user = Auth::user();
 
-        $favoriteItems = $user->favoriteItems;
+        $favoriteItems = $user->favoriteItems()
+                              ->where('items.del_flg', 0)
+                              ->whereHas('user', function ($query) {
+                                  $query->where('del_flg', 0);
+                              })
+                              ->get();
 
         return view('ichiran.favorites', compact('favoriteItems', 'user'));
     }
@@ -96,9 +105,15 @@ class DisplayController extends Controller
         $user = Auth::user();
 
         $buys = Buy::where('user_id', $user->id)
-               ->with('item.mainImage')
-               ->latest()
-               ->get();
+                   ->whereHas('item', function ($query) {
+                       $query->where('del_flg', 0)
+                           ->whereHas('user', function ($q) {
+                                 $q->where('del_flg', 0);
+                           });
+                   })
+                   ->with('item.mainImage')
+                   ->latest()
+                   ->get();
 
     return view('ichiran.buys', compact('buys', 'user'));
     }
@@ -109,6 +124,7 @@ class DisplayController extends Controller
     
         $follows = Follow::where('follower_id', $user->id)
                          ->with('followedUser')
+                         ->where('del_flg', 0)
                          ->get();
     
         return view('ichiran.follows', compact('follows', 'user'));

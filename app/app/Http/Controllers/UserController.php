@@ -8,7 +8,9 @@ use App\Models\User;
 use App\Models\Item;
 use App\Models\Follow;
 
-use App\Http\Requests\CreateData;
+use App\Http\Requests\Createuser;
+use App\Http\Requests\Createbuy;
+use App\Http\Requests\Createprofile;
 
 
 class UserController extends Controller
@@ -18,7 +20,7 @@ class UserController extends Controller
         return view('Auth.login');
     }
 
-    public function signup(Createuser $request) {
+    public function signup(Request $request) {
 
         return view('Auth.signup', [
             'email' => $request->query('email'),
@@ -38,7 +40,7 @@ class UserController extends Controller
         return view('Auth.signup_conf');
     }
 
-    public function signupcomp(Createuser $request) {
+    public function signupcomp(Request $request) {
         $user = new User;
 
         $user->email = $request->session()->get('email');

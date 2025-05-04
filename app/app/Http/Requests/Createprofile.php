@@ -23,10 +23,10 @@ class Createprofile extends FormRequest
     {
         return [
             'username' => 'required|max:40',
-            'profile' => 'max:300',
-            'name' => 'max:20',
-            'tel' => 'digits:11',
-            'postcode' => 'digits:7',
+            'profile' => 'nullable|max:300',
+            'name' => 'nullable|max:20',
+            'tel' => 'nullable|digits:11',
+            'postcode' => 'nullable|digits:7',
         ];
     }
 }

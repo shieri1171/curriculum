@@ -50,7 +50,7 @@
                                     </form>
 
                                 @elseif($user->del_flg == 1)
-                                    <form action="{{ route('user.restore', ['user' => $user->id]) }}" method="POST" style="display:inline;" onsubmit="return confirm('このユーザーをストアに復元しますか？');">
+                                    <form action="{{ route('user.restore', ['user_id' => $user->id]) }}" method="POST" style="display:inline;" onsubmit="return confirm('このユーザーをストアに復元しますか？');">
                                         @csrf
                                         <button type="submit" class="btn btn-outline-info btn-sm">復元</button>
                                     </form>

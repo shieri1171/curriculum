@@ -15,8 +15,7 @@ class ManagerController extends Controller
 
     public function manageruser(User $user) {
 
-        $users = User::withoutGlobalScope('active')
-                     ->orderBy('created_at', 'desc')
+        $users = User::orderBy('created_at', 'desc')
                      ->get();
 
         return view('management.manager_user', compact('users'));
@@ -24,8 +23,7 @@ class ManagerController extends Controller
 
     public function manageritem(Item $item) {
 
-        $items = Item::withoutGlobalScope('item_delflg')
-                     ->with('mainImage')
+        $items = Item::with(['mainImage', 'itemImages'])
                      ->orderBy('created_at', 'desc')
                      ->get();
 
@@ -42,8 +40,10 @@ class ManagerController extends Controller
     }
 
     //ユーザー復元処理
-    public function userrestore(User $user)
+    public function userrestore($user_id)
     {
+        $user = User::withoutGlobalScopes()->findOrFail($user_id);
+
         $user->del_flg = 0;
         $user->save();
 

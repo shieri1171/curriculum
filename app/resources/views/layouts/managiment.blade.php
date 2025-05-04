@@ -28,7 +28,7 @@
     <div id="app">
         <nav class="fixed-top navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container-fluid">
-                <a href="{{ url('/') }}">
+                <a href="{{ route('manager') }}">
                     <img src="{{ asset('storage/unnamed.png') }}" alt="メルカリ" style="width: 60px; height: 60px;">
                 </a>
                 <span class="navbar-text">
@@ -41,7 +41,20 @@
                 </form>
             </div>
         </nav>
+
         <div style="height: 80px;"></div>
+
+        <style>
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+            th, td {
+                border: 1px solid #ccc;
+                text-align: center;
+            }
+        </style>
+
         @yield('content')
     </div>
 </body>
