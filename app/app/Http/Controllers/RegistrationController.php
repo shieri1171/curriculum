@@ -98,13 +98,18 @@ class RegistrationController extends Controller
             session(['images' => $imagePaths]);
         }
 
+        $keepImageIds = $request->input('keep_images', []);
+
+        $existingImages = \App\Models\ItemImage::whereIn('id', $keepImageIds)->pluck('image_path')->toArray();
+
         session([
             'item_id' => $item->id,
             'itemname' => $request->itemname,
             'price' => $request->price,
             'state' => $request->state,
             'presentation' => $request->presentation,
-            'existing_images' => session('existing_images'),
+            'existing_images' => $existingImages,
+            'existing_image_ids' => $keepImageIds,
         ]);
 
         return view('Items.item_edit_conf', compact('item'));
@@ -128,7 +133,8 @@ class RegistrationController extends Controller
             }
         }
 
-        if ($newImagePaths = session('images', [])) {
+        $newImagePaths = session('images', []);
+        if(!empty($newImagePaths)) {
             foreach ($newImagePaths as $index => $path) {
                 ItemImage::create([
                     'item_id' => $item->id,
@@ -138,6 +144,16 @@ class RegistrationController extends Controller
             }
         }
 
+        $hasMain = $item->itemImages()->where('mainflg', 1)->exists();
+
+        if (!$hasMain) {
+            $firstImage = $item->itemImages()->first();
+            if ($firstImage) {
+                $firstImage->mainflg = 1;
+                $firstImage->save();
+            }
+        }
+        
         $request->session()->forget(['item_id', 'images', 'existing_images', 'itemname', 'price', 'state', 'presentation']);
 
         return view('Items.item_edit_comp', compact('item'));

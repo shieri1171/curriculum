@@ -15,28 +15,30 @@
               </div>
             @endif
 
-            @if ($item->itemImages->count())
-              <div class="mb-3">
-                <p>登録済み画像：</p>
-                <div class="row">
-                  @foreach ($item->itemImages as $image)
-                    <div class="col-md-3 mb-2">
-                      <img src="{{ asset('storage/' . $image->image_path) }}" class="img-thumbnail" style="width:150px; height:150px; object-fit: cover;" alt="登録済み画像">
-                      <form action="{{ route('item.image.delete', ['image' => $image->id]) }}" method="POST" onsubmit="return confirm('この画像を削除してもよろしいですか？');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm mt-2">削除</button>
-                      </form>
-                    </div>
-                  @endforeach
-                </div>
-              </div>
-            @endif
-
             <form action="{{ route('item.edit.conf', $item->id) }}" method="POST" enctype="multipart/form-data">
               @csrf
-              @method('PUT')
               <input type="hidden" name="item_id" value="{{ $item->id }}">
+
+              @if ($item->itemImages->count())
+                <div class="mb-3">
+                  <p>登録済み画像：</p>
+                  <div class="row">
+                    @foreach ($item->itemImages as $image)
+                      <div class="col-md-3 mb-2">
+                        <img src="{{ asset('storage/' . $image->image_path) }}" class="img-thumbnail" style="width:150px; height:150px; object-fit: cover;" alt="登録済み画像">
+
+                        <div class="form-check mt-2">
+                          <input class="form-check-input" type="checkbox" name="keep_images[]" value="{{ $image->id }}" id="imageCheck{{ $image->id }}" checked>
+                          <label class="form-check-label" for="imageCheck{{ $image->id }}">
+                            残す
+                          </label>
+                        </div>
+                      </div>
+                    @endforeach
+                  </div>
+                </div>
+              @endif
+
               <div class="form-group">
                 <label for="images">商品画像</label>
                 

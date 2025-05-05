@@ -15,17 +15,11 @@
                         @auth
                             <!-- 一般ユーザー(出品者以外)の場合 -->
                             @if(auth()->user()->id !== $user->id && auth()->user()->user_flg === 1)
-                                @if (auth()->user()->follows()->where('follow_id', $user->id)->exists())
-                                    <form action="{{ route('follow', $user->id) }}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="btn btn-info">フォロー解除</button>
-                                    </form>
-                                @else
-                                    <form action="{{ route('follow', $user->id) }}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="btn btn-outline-secondary">フォロー</button>
-                                    </form>
-                                @endif
+                                <button id='follow-btn' class="btn {{ auth()->user()->follows()->where('follow_id', $user->id)->exists() ? 'btn-info' : 'btn-outline-secondary' }}" 
+                                        data-user-id="{{ $user->id }}" 
+                                        data-url="{{ route('follow', $user->id) }}">
+                                    {{ auth()->user()->follows()->where('follow_id', $user->id)->exists() ? 'フォロー解除' : 'フォロー' }}
+                                </button>
                             <!-- 出品者本人の場合 -->
                             @elseif(auth()->user()->id === $user->id)
                                 <a href="{{ route('profile.edit', $user->id) }}" class="btn btn-warning">プロフィール編集</a>
@@ -87,4 +81,38 @@
             @endforeach
         </div>    
     </div>
+
+<script>
+// フォロー処理
+  document.getElementById('follow-btn').addEventListener('click', async function () {
+    const userId = this.getAttribute('data-user-id');
+    const url = this.getAttribute('data-url');
+    const btn = this;
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+        });
+
+        const data = await response.json();
+
+        if (data.status === 'followed') {
+            btn.classList.remove('btn-outline-secondary');
+            btn.classList.add('btn-info');
+            btn.textContent = 'フォロー解除';
+        } else {
+            btn.classList.remove('btn-info');
+            btn.classList.add('btn-outline-secondary');
+            btn.textContent = 'フォロー';
+        }
+    } catch (error) {
+        console.error('エラー:', error);
+    }
+  });
+</script>
+
 @endsection

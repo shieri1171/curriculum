@@ -92,7 +92,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/item_restore/{item}', [ManagerController::class, 'itemrestore'])->name('item.restore');
     //編集
     Route::get('/item-edit/{item}', [RegistrationController::class, 'itemedit'])->name('item.edit');
-    Route::put('/item-edit-conf/{item}', [RegistrationController::class, 'itemeditconf'])->name('item.edit.conf');
+    Route::post('/item-edit-conf/{item}', [RegistrationController::class, 'itemeditconf'])->name('item.edit.conf');
     Route::post('/item-edit-comp/{item}', [RegistrationController::class, 'itemeditcomp'])->name('item.edit.comp');
     //画像削除
     Route::delete('/item-image-delete/{image}', [RegistrationController::class, 'imagedelete'])->name('item.image.delete');

@@ -116,17 +116,13 @@ class UserController extends Controller
 
         if ($isFollowing ) {
             $isFollowing ->delete();
-            // return response()->json(['status' => 'unfollowed']);
-
-            return redirect()->back();
+            return response()->json(['status' => 'unfollowed']);
         } else {
             Follow::create([
                 'follower_id' => $user->id,
                 'follow_id' => $followId,
             ]);
-            // return response()->json(['status' => 'followed']);
-
-            return redirect()->back();
+            return response()->json(['status' => 'followed']);
         }
     }
 

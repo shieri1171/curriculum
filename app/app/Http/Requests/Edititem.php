@@ -24,8 +24,8 @@ class Edititem extends FormRequest
         return [
             'itemname' => 'required|max:40',
             'price' => 'required|integer|min:300|max:999999',
-            'images' => 'array|min:1|max:10',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images' => 'nullable|array|max:10',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'presentation' => 'max:300',
             'state' => 'required',
         ];
@@ -40,6 +40,9 @@ class Edititem extends FormRequest
 
             $itemId = $this->route('item');
             $item = Item::with('itemImages')->find($itemId);
+
+            $keepImageIds = $this->input('keep_images', []);
+            $existingCount = count($keepImageIds);
 
             if (($newCount + $existingCount) == 0) {
                 $validator->errors()->add('images', '画像は1枚以上登録してください。');
