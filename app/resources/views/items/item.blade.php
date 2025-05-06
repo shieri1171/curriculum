@@ -81,12 +81,6 @@
     preview.innerHTML = ''; 
     const files = e.target.files;
 
-    if (files.length > 10) {
-      alert('画像は10枚までです');
-      e.target.value = ''; 
-      return;
-    }
-
     Array.from(files).forEach(file => {
       if (!file.type.match('image.*')) {
         return;

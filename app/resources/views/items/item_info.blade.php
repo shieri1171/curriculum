@@ -184,6 +184,7 @@
       method: 'POST',
       data: $(this).serialize(),
       success: function(response) {
+        let isOwner = response.user_id === {{ $item->user_id }};
         let newComment = `
           <li class="list-group-item">
             <p class="mb-0 fw-bold"><strong>${response.user.username}</strong></p>
@@ -193,6 +194,7 @@
         `;
         $('.list-group').append(newComment);
         $('#commentForm')[0].reset();
+        $('.text-muted:contains("まだコメントはありません")').hide();
       },
       error: function() {
         alert('コメント送信に失敗しました');
