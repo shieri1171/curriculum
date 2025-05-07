@@ -42,7 +42,7 @@
         <div class="col-12">
           <!-- コメント欄 -->
           <h4>コメント</h4>
-          <div class="border p-3 rounded mb-4">
+          <div class="border p-3 rounded mb-4 comment-box">
             @if($comments->isEmpty())
               <p class="text-muted">まだコメントはありません。</p>
             @else
@@ -192,14 +192,14 @@
             <p class="mb-0 text-muted small">${response.created_at}</p>
           </li>
         `;
-        if ($('.list-group').length === 0) {
+        if ($('.comment-box .list-group').length === 0) {
           let ul = $('<ul class="list-group"></ul>').append(newComment);
-          $('.border').prepend(ul);
+          $('.comment-box').prepend(ul);
         } else {
-          $('.list-group').append(newComment);
+          $('.comment-box .list-group').append(newComment);
         }
         $('#commentForm')[0].reset();
-        $('.text-muted:contains("まだコメントはありません")').hide();
+        $('.comment-box .text-muted:contains("まだコメントはありません")').hide();
       },
       error: function() {
         alert('コメント送信に失敗しました');
