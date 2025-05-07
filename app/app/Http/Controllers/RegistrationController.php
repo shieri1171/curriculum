@@ -292,7 +292,8 @@ class RegistrationController extends Controller
         return response()->json([
             'user' => ['username' => Auth::user()->username],
             'text' => $comment->text,
-            'created_at' => $comment->created_at->format('Y-m-d H:i')
+            'created_at' => $comment->created_at->format('Y-m-d H:i'),
+            'is_owner' => $comment->user_id == $request->user()->id,
         ]);
     }
 

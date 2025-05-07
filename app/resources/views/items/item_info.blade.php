@@ -186,13 +186,18 @@
       success: function(response) {
         let isOwner = response.user_id === {{ $item->user_id }};
         let newComment = `
-          <li class="list-group-item">
+          <li class="list-group-item ${response.is_owner ? 'text-end bg-light' : ''}">
             <p class="mb-0 fw-bold"><strong>${response.user.username}</strong></p>
             <p class="mb-0">${response.text}</p>
             <p class="mb-0 text-muted small">${response.created_at}</p>
           </li>
         `;
-        $('.list-group').append(newComment);
+        if ($('.list-group').length === 0) {
+          let ul = $('<ul class="list-group"></ul>').append(newComment);
+          $('.border').prepend(ul);
+        } else {
+          $('.list-group').append(newComment);
+        }
         $('#commentForm')[0].reset();
         $('.text-muted:contains("まだコメントはありません")').hide();
       },
